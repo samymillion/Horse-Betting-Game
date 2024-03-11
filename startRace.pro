@@ -5,5 +5,9 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += \
-    startRace.cpp
+    startRace.cpp \
+    gamewindow.cpp\
+    bet.cpp
 
+HEADERS  += gamewindow.h \
+            bet.h

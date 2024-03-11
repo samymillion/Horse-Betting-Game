@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/annama/4TH_YEAR_CS/CS3305_Group/group30",
+      "program": "/Users/annama/4TH_YEAR_CS/CS3305_Group/group30/build/Debug/outDebug"
+    }
+  ]
+}

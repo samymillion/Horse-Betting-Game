@@ -1,3 +1,5 @@
+#include "gamewindow.h"
+
 #include <QApplication>
 #include <QWidget>
 #include <QPalette>
@@ -120,11 +122,19 @@ int main(int argc, char *argv[]) {
     button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; font-family: Trebuchet MS; color: white; border: 1px solid black;");
     gridLayout->addWidget(button, 0, 1);
 
+    // BETTING INTERFACE
+    //Create an instance of GameWindow
+    GameWindow *gameWindow = new GameWindow();
+    // Add gameWindow to the layout of MainWindow
     button = new QPushButton();
-    button->setFixedSize(470, 50);
-    button->setText("BETTING AMOUNT");
-    button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; font-family: Trebuchet MS; color: white; border: 1px solid black;");
-    gridLayout->addWidget(button, 0, 2);
+    button->setFixedSize(470, 400);
+    gridLayout->addWidget(gameWindow, 0, 2);
+
+    // button = new QPushButton();
+    // button->setFixedSize(470, 50);
+    // button->setText("BETTING AMOUNT");
+    // button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; font-family: Trebuchet MS; color: white; border: 1px solid black;");
+    // gridLayout->addWidget(button, 0, 2);
 
     // CREATE CONNECTION FROM START BUTTON TO BACK END RACE SIM
 
