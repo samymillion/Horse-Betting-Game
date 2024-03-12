@@ -54,13 +54,17 @@ OBJECTS_DIR   = ./
 
 SOURCES       = startRace.cpp \
 		gamewindow.cpp \
-		bet.cpp moc_gamewindow.cpp \
-		moc_bet.cpp
+		bet.cpp qrc_derbyRes.cpp \
+		moc_gamewindow.cpp \
+		moc_bet.cpp \
+		moc_startRace.cpp
 OBJECTS       = startRace.o \
 		gamewindow.o \
 		bet.o \
+		qrc_derbyRes.o \
 		moc_gamewindow.o \
-		moc_bet.o
+		moc_bet.o \
+		moc_startRace.o
 DIST          = /usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/spec_pre.prf \
 		/usr/local/Cellar/qt@5/5.15.12_1/mkspecs/qdevice.pri \
 		/usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/device_config.prf \
@@ -274,7 +278,8 @@ DIST          = /usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/spec_pre.prf \
 		/usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/yacc.prf \
 		/usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/lex.prf \
 		startRace.pro gamewindow.h \
-		bet.h startRace.cpp \
+		bet.h \
+		startRace.h startRace.cpp \
 		gamewindow.cpp \
 		bet.cpp
 QMAKE_TARGET  = startRace
@@ -514,6 +519,7 @@ Makefile: startRace.pro /usr/local/Cellar/qt@5/5.15.12_1/mkspecs/macx-clang/qmak
 		/usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/yacc.prf \
 		/usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/lex.prf \
 		startRace.pro \
+		derbyRes.qrc \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Resources/QtWidgets.prl \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Resources/QtGui.prl \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Resources/QtCore.prl
@@ -731,6 +737,7 @@ Makefile: startRace.pro /usr/local/Cellar/qt@5/5.15.12_1/mkspecs/macx-clang/qmak
 /usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/yacc.prf:
 /usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/lex.prf:
 startRace.pro:
+derbyRes.qrc:
 /usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Resources/QtWidgets.prl:
 /usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Resources/QtGui.prl:
 /usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Resources/QtCore.prl:
@@ -763,8 +770,9 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+	$(COPY_FILE) --parents derbyRes.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents gamewindow.h bet.h $(DISTDIR)/
+	$(COPY_FILE) --parents gamewindow.h bet.h startRace.h $(DISTDIR)/
 	$(COPY_FILE) --parents startRace.cpp gamewindow.cpp bet.cpp $(DISTDIR)/
 
 
@@ -792,17 +800,30 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_derbyRes.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_derbyRes.cpp
+qrc_derbyRes.cpp: derbyRes.qrc \
+		/usr/local/Cellar/qt@5/5.15.12_1/bin/rcc \
+		green.png \
+		blue.png \
+		brown.png \
+		yellow.png \
+		gold.png \
+		red.png \
+		gradient.png \
+		fin.png
+	/usr/local/Cellar/qt@5/5.15.12_1/bin/rcc -name derbyRes derbyRes.qrc -o qrc_derbyRes.cpp
+
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -O2 -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -mmacosx-version-min=10.13 -Wall -Wextra -dM -E -o moc_predefs.h /usr/local/Cellar/qt@5/5.15.12_1/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_gamewindow.cpp moc_bet.cpp
+compiler_moc_header_make_all: moc_gamewindow.cpp moc_bet.cpp moc_startRace.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_gamewindow.cpp moc_bet.cpp
+	-$(DEL_FILE) moc_gamewindow.cpp moc_bet.cpp moc_startRace.cpp
 moc_gamewindow.cpp: gamewindow.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QWidget \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qwidget.h \
@@ -832,6 +853,24 @@ moc_bet.cpp: bet.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/bin/moc
 	/usr/local/Cellar/qt@5/5.15.12_1/bin/moc $(DEFINES) --include /Users/annama/4TH_YEAR_CS/CS3305_Group/group30/moc_predefs.h -I/usr/local/Cellar/qt@5/5.15.12_1/mkspecs/macx-clang -I/Users/annama/4TH_YEAR_CS/CS3305_Group/group30 -I/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers -I/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers -I/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include -F/usr/local/Cellar/qt@5/5.15.12_1/lib bet.h -o moc_bet.cpp
 
+moc_startRace.cpp: startRace.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QWidget \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qwidget.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QPushButton \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/QVector \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qvector.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QGridLayout \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qgridlayout.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/QTimer \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qtimer.h \
+		moc_predefs.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/bin/moc
+	/usr/local/Cellar/qt@5/5.15.12_1/bin/moc $(DEFINES) --include /Users/annama/4TH_YEAR_CS/CS3305_Group/group30/moc_predefs.h -I/usr/local/Cellar/qt@5/5.15.12_1/mkspecs/macx-clang -I/Users/annama/4TH_YEAR_CS/CS3305_Group/group30 -I/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers -I/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers -I/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include -F/usr/local/Cellar/qt@5/5.15.12_1/lib startRace.h -o moc_startRace.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -846,36 +885,48 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
-startRace.o: startRace.cpp gamewindow.h \
+startRace.o: startRace.cpp /usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QApplication \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qapplication.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QWidget \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qwidget.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/QPalette \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/qpalette.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/QColor \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/qcolor.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QGridLayout \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qgridlayout.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QPushButton \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/QIcon \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/qicon.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/QSize \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qsize.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/QTimer \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qtimer.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QMessageBox \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qmessagebox.h \
+		startRace.h \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/QVector \
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qvector.h \
+		GameWindow.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QLabel \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qlabel.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/QMap \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qmap.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/QPair \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qpair.h \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QGridLayout \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qgridlayout.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QLineEdit \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qlineedit.h \
 		bet.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/QObject \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qobject.h \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QApplication \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qapplication.h \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/QPalette \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/qpalette.h \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/QColor \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtGui.framework/Headers/qcolor.h \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/QHBoxLayout \
-		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtWidgets.framework/Headers/qboxlayout.h
+		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o startRace.o startRace.cpp
 
 gamewindow.o: gamewindow.cpp gamewindow.h \
@@ -915,11 +966,17 @@ bet.o: bet.cpp bet.h \
 		/usr/local/Cellar/qt@5/5.15.12_1/lib/QtCore.framework/Headers/qobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o bet.o bet.cpp
 
+qrc_derbyRes.o: qrc_derbyRes.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_derbyRes.o qrc_derbyRes.cpp
+
 moc_gamewindow.o: moc_gamewindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_gamewindow.o moc_gamewindow.cpp
 
 moc_bet.o: moc_bet.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_bet.o moc_bet.cpp
+
+moc_startRace.o: moc_startRace.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_startRace.o moc_startRace.cpp
 
 ####### Install
 

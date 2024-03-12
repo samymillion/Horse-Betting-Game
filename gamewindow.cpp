@@ -1,4 +1,5 @@
 #include "gamewindow.h"
+
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLabel>
@@ -109,18 +110,6 @@ void GameWindow::onBetEntered() {
         betInput->clear();
     }
 
-    // if (ok && betAmount >= 1 && betAmount <= 10000) {
-    //     // Bet amount is within the valid range
-    //     //qDebug() << "Bet amount:" << betAmount; // just printing bet amount for now but can save it to something
-    //     // Perform actions with the bet amount here
-    // } else {
-    //     // Bet amount is invalid
-    //     //qDebug() << "Invalid bet amount:" << betAmountStr;
-    //     // Show error message
-    //     QMessageBox::critical(this, "Invalid Bet Amount", "Please enter a valid bet amount from $1 to $10,000.");
-    //     // Clear the bet input field
-    //     betInput->clear();
-    // }
 }
 
 void GameWindow::updateMoneyPool(double newAmount)
@@ -131,7 +120,8 @@ void GameWindow::updateMoneyPool(double newAmount)
 
 void GameWindow::checkBetResult(int winningHorse) {
     if (horseIndex == winningHorse) {
-        double payout = bet->calculatePayout(betAmount);
+        // double payout = bet->calculatePayout(betAmount);
+        double payout = bet->calculatePayout(bet->getBetAmount());
         double moneyPool = bet->getMoneyPool();
         double newPool = payout + moneyPool;
         updateMoneyPool(newPool);
