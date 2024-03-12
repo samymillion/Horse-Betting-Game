@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>blue.png</file>
+        <file>brown.png</file>
+        <file>green.png</file>
+        <file>red.png</file>
+        <file>yellow.png</file>
+        <file>gold.png</file>
+        <file>gradient.png</file>
+        <file>fin.png</file>
+    </qresource>
+</RCC>
