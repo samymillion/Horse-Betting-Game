@@ -22,6 +22,8 @@ private slots:
     void onBetEntered();
     void updateMoneyPool(double newAmount);
 
+public slots:
+    void checkBetResult(int winningHorseIndex);
 private:
     QLabel *welcomeLabel;
     QPushButton *continueButton;
@@ -29,6 +31,7 @@ private:
     QString horseSelected; // Variable to store the selected horse
     QLineEdit *betInput; // Variable to store the bet input field
     int betAmount; // Variable to store the bet amount
+    int horseIndex;
 
     //bet object
     Bet *bet;

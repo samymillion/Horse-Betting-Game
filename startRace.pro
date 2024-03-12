@@ -10,4 +10,8 @@ SOURCES += \
     bet.cpp
 
 HEADERS  += gamewindow.h \
-            bet.h
+            bet.h \
+            startRace.h
+
+RESOURCES += \
+    derbyRes.qrc

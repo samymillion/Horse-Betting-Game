@@ -13,6 +13,7 @@ public:
     double getBetAmount() const;
     double getMoneyPool() const;
     bool placeBet();
+    double calculatePayout(double amount);
 signals:
     void moneyPoolChanged(double newAmount);
 public slots:

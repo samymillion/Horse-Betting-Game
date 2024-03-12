@@ -37,3 +37,7 @@ bool Bet::placeBet()
         return true;
     }
 }
+
+double Bet::calculatePayout(double amount){
+    return amount+amount;
+}

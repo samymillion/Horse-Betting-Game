@@ -14,6 +14,8 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
     setWindowTitle("Game Window");
     setFixedSize(470, 400);
     setStyleSheet("background-color: white;");
+    const QString iconPaths[5] = {":/icons/brown.png", ":/icons/blue.png", ":/icons/green.png", ":/icons/red.png", ":/icons/yellow.png"};
+
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignCenter);
@@ -44,14 +46,7 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
         horseButtons[i]->setFixedSize(100, 50);
         horseButtons[i]->setVisible(false); // Initially hide the buttons
 
-        //QString imagePath = QString(":/images/horse%1.png").arg(i + 1); // Assuming images are named horse1.png, horse2.png, etc.
-        //QPixmap pixmap(imagePath);
-
-        // Set button icon
-        //if (!pixmap.isNull()) {
-            //horseButtons[i]->setIcon(QIcon(pixmap));
-            //horseButtons[i]->setIconSize(pixmap.rect().size());
-        //}
+        horseButtons[i]->setIcon(QIcon(iconPaths[i]));
         layout->addWidget(horseButtons[i]);
 
         // Connect the clicked signal of each horse button to a slot
@@ -73,6 +68,12 @@ void GameWindow::onContinueClicked() {
 void GameWindow::onHorseSelected() {
     QPushButton *senderButton = qobject_cast<QPushButton*>(sender());
     if (senderButton) {
+        for (int i = 0; i < 5; ++i) {
+            if (horseButtons[i] == senderButton) {
+                horseIndex = i;
+                break;
+            }
+        }
         horseSelected = senderButton->text();
         //horseSelected = senderButton->icon().pixmap().fileName();
         //qDebug() << "Selected horse:" << horseSelected;
@@ -128,7 +129,18 @@ void GameWindow::updateMoneyPool(double newAmount)
     moneyPoolLabel->setText("Money Pool: " + QString::number(newAmount));
 }
 
-
+void GameWindow::checkBetResult(int winningHorse) {
+    if (horseIndex == winningHorse) {
+        double payout = bet->calculatePayout(betAmount);
+        double moneyPool = bet->getMoneyPool();
+        double newPool = payout + moneyPool;
+        updateMoneyPool(newPool);
+        QMessageBox::information(this, "Race Result", "Congratulations! Your horse won!");
+    }
+    else{
+        QMessageBox::information(this, "Race Result", "Sorry! Your horse didn't win this time.");
+    }
+}
 
 
 
