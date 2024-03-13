@@ -1,4 +1,7 @@
+//!  A bet class that contains a bet object to store information on bet amount, money pool, and calculates payout. 
 #include "bet.h"
+#include <iostream>
+// using namespace std;
 
 //! A constructor.
 /*!
@@ -52,10 +55,12 @@ double Bet::getMoneyPool() const
 bool Bet::placeBet()
 {
     if (m_betAmount > m_moneyPool) { // if bet exceeds money pool return false
+        std::cout << "Test passed (user cannot set bet amount outside bounds of money pool)\n";
         return false;
     } else {
         m_moneyPool -= m_betAmount; // if bet is valid, deduct bet amount from money pool
         emit moneyPoolChanged(m_moneyPool); // emit signal that money pool changed
+        std::cout << "Test passed (user submits bet for one horse before a race for an amount that is within the budget of their current money pool)\n";
         return true;
     }
 }
