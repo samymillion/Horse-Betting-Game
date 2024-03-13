@@ -12,6 +12,8 @@
 #include <QMessageBox>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
+
 #include "startRace.h"
 #include "GameWindow.h"
 
