@@ -61,7 +61,9 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
     }
 }
 
-
+//! A function allows the user to pick the horse that they would like to bet on too win
+/*!
+*/
 void GameWindow::onContinueClicked() {
 
     std::cout << "Test passed (Continue Button Works)\n";
@@ -74,6 +76,9 @@ void GameWindow::onContinueClicked() {
     }
 }
 
+//! A function that allows the user to input in a text box the amount they would like to bet on a horse
+/*!
+*/
 void GameWindow::onHorseSelected() {
 
     std::cout << "Test passed (Horse Selection Works)\n";
@@ -103,6 +108,9 @@ void GameWindow::onHorseSelected() {
     }
 }
 
+//! A function that once the user has entered bet sets the bet amount and goes onto the next screen to confirm if it is placed succesfully or if there is an error
+/*!
+*/
 void GameWindow::onBetEntered() {
     QString betAmountStr = betInput->text();
     bool ok;
@@ -119,15 +127,22 @@ void GameWindow::onBetEntered() {
         QMessageBox::warning(this, "Error", "Bet amount exceeds money pool!");
         betInput->clear();
     }
-
 }
 
+//! A function that updates the money paul based on the new maount
+/*!
+    \param newAmount the new amount for money pool
+*/
 void GameWindow::updateMoneyPool(double newAmount)
 {
     //! Updates money pool with new amount 
     moneyPoolLabel->setText("Money Pool: " + QString::number(newAmount));
 }
 
+//! A function checks if the horse that the user bet on won the race 
+/*!
+    \param winningHorse id of the horse that wins
+*/
 void GameWindow::checkBetResult(int winningHorse) {
     if (horseIndex == winningHorse) {
         // double payout = bet->calculatePayout(betAmount);
