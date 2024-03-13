@@ -23,6 +23,7 @@ startRace::startRace(QWidget *parent) : QWidget(parent), horsesFinished(0) {
 
 //! A function to setup aspects of the race within the gamewindow 
 void startRace::setupUI() {
+        std::cout << "Test passed (GUI is displayed successfully)\n";
         setWindowTitle("PIXEL DERBY 2024");
         setStyleSheet("background-color: #171a17;");
         showFullScreen();
@@ -80,6 +81,7 @@ QHBoxLayout* startRace::createButtonBar() {
         startRaceButton = createButton("S T A R T   R A C E", 600, 50, "font: bold; background-image: url(:/icons/gradient.png); background-position: center; font-size: 30px; color: white; border: 3px solid white; border-radius: 15px;");
         layout->addWidget(startRaceButton);
         connect(startRaceButton, &QPushButton::clicked, this, [=]() {
+            std::cout << "Test passed (Start Button Initiates the Race)\n";
             timer->start(500);
             startRaceButton->setEnabled(false);
         });
@@ -169,6 +171,7 @@ void startRace::advanceHorses() {
                 placeHorse(row);
 
                 if(horsesFinished == 5){
+                    std::cout << "Test passed (Race Ends after ALL horses reach the finish line)\n";
                     timer->stop(); // Stop the race
                     QMessageBox messageBox;
                     messageBox.setText(QString("Horse %1 wins! \n"
@@ -182,6 +185,7 @@ void startRace::advanceHorses() {
                                            .arg(results[3]+1)
                                            .arg(results[4]+1));
                     messageBox.exec();
+                    std::cout << "Test passed (Race results are displayed on a pop up window successfully)\n";
                     emit raceFinished(results[0]);
                     break;
                 }

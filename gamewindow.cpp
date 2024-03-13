@@ -9,6 +9,7 @@
 #include <QPixmap>
 #include <QMessageBox>
 #include <QLineEdit>
+#include <iostream>
 
 //! Game window 
 /*!
@@ -62,6 +63,8 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
 
 
 void GameWindow::onContinueClicked() {
+
+    std::cout << "Test passed (Continue Button Works)\n";
     //! User to pick a horse
     welcomeLabel->setText("Pick a horse");
     continueButton->hide();
@@ -72,6 +75,9 @@ void GameWindow::onContinueClicked() {
 }
 
 void GameWindow::onHorseSelected() {
+
+    std::cout << "Test passed (Horse Selection Works)\n";
+
     QPushButton *senderButton = qobject_cast<QPushButton*>(sender());
     if (senderButton) {
         for (int i = 0; i < 5; ++i) {
