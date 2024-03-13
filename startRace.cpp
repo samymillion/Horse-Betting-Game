@@ -15,11 +15,13 @@
 #include "startRace.h"
 #include "GameWindow.h"
 
+//! startRace runs the race logic and components related to the race
 startRace::startRace(QWidget *parent) : QWidget(parent), horsesFinished(0) {
     srand(static_cast<unsigned>(time(NULL))); //seed
     this->setupUI();
 }
 
+//! A function to setup aspects of the race within the gamewindow 
 void startRace::setupUI() {
         setWindowTitle("PIXEL DERBY 2024");
         setStyleSheet("background-color: #171a17;");
@@ -32,20 +34,20 @@ void startRace::setupUI() {
         QGridLayout* gridLayout = new QGridLayout;
         QPushButton* button;
 
-        // PLAYER STATS BUTTON
+        //! Player stats button
         button = new QPushButton("PLAYER STATS");
         button->setFixedSize(470, 50);
         button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; color: white; border: 1px solid black;");
         gridLayout->addWidget(button, 0, 0);
 
-        // HORSE ROSTER BUTTON
+        //! Horse roster button
         button = new QPushButton("HORSE ROSTER");
         button->setFixedSize(470, 50);
         button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; color: white; border: 1px solid black;");
         gridLayout->addWidget(button, 0, 1);
 
-        // BETTING INTERFACE
-        // Assuming GameWindow is properly defined elsewhere and handles betting logic
+        //! Betting interface
+        //! Assuming GameWindow is properly defined elsewhere and handles betting logic
         GameWindow* gameWindow = new GameWindow();
         connect(this, &startRace::raceFinished, gameWindow, &GameWindow::checkBetResult);
         gridLayout->addWidget(gameWindow, 0, 2);
@@ -53,7 +55,7 @@ void startRace::setupUI() {
         createRaceTrack(mainLayout);
         mainLayout->addLayout(gridLayout);
 
-        // Set main layout alignment and size
+        //! Set main layout alignment and size
         mainLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
         setMinimumSize(960, 540);
 
@@ -61,15 +63,20 @@ void startRace::setupUI() {
         connect(timer, &QTimer::timeout, this, &startRace::advanceHorses);
     }
 
+
+//! A function that creates the top panel of buttons including money, start race, and game title bar
+/*!
+*   \return QHBoxLayout object layout which contains the widgets
+*/
 QHBoxLayout* startRace::createButtonBar() {
         QHBoxLayout* layout = new QHBoxLayout;
         QPushButton* button;
 
-        // Bet Display Button
+        //! Bet Display Button
         button = createButton("$42000", 200, 50, "font-family: Trebuchet MS Bold; background-color: #0f111a; background-position: center; font-size: 30px; color: white; border: 3px solid #282e42; border-radius: 5px;");
         layout->addWidget(button);
 
-        // Start Race Button
+        //! Start Race Button
         startRaceButton = createButton("S T A R T   R A C E", 600, 50, "font: bold; background-image: url(:/icons/gradient.png); background-position: center; font-size: 30px; color: white; border: 3px solid white; border-radius: 15px;");
         layout->addWidget(startRaceButton);
         connect(startRaceButton, &QPushButton::clicked, this, [=]() {
@@ -77,13 +84,21 @@ QHBoxLayout* startRace::createButtonBar() {
             startRaceButton->setEnabled(false);
         });
 
-        // Version Display Button
+        //! Version Display Button
         button = createButton("PIXELDERBY v1.0", 300, 50, "font-family: Verdana; background-image: url(:/icons/gold.png); background-position: center; font-size: 25px; color: black; border: 1px solid black; border-radius: 5px;");
         layout->addWidget(button);
 
         return layout;
     }
 
+//! A function that creates buttons that we use throughout startRace
+/*!
+    \return QPushButton object button to use for different purposes
+    \param text of the button text to appear
+    \param width of the button dimensions
+    \param height of the button dimensions
+    \param style elements including font, background, etc.
+*/
 QPushButton* startRace::createButton(const QString& text, int width, int height, const QString& style) {
         QPushButton* button = new QPushButton(text);
         button->setFixedSize(width, height);
@@ -91,6 +106,10 @@ QPushButton* startRace::createButton(const QString& text, int width, int height,
         return button;
     }
 
+//! A function that creates the race track for the horse game
+/*!
+    \param mainLayout a Qt layout to build the race track layout upon and appear flexibly in game window
+*/
 void startRace::createRaceTrack(QVBoxLayout* mainLayout) {
         raceTrackLayout = new QGridLayout;
         trackButtons.resize(numRows);
@@ -114,6 +133,11 @@ void startRace::createRaceTrack(QVBoxLayout* mainLayout) {
         mainLayout->addLayout(raceTrackLayout);
     }
 
+//! A function that creates button marking the starting line for the horse race game
+/*!
+    \param button Qt button to utilize as starting line
+    \param row what row to place within
+*/
 void startRace::setupStartingLineButton(QPushButton* button, int row) {
         const QString iconPaths[5] = {":/icons/brown.png", ":/icons/blue.png", ":/icons/green.png", ":/icons/red.png", ":/icons/yellow.png"};
         button->setIcon(QIcon(iconPaths[row % 5]));
@@ -121,6 +145,7 @@ void startRace::setupStartingLineButton(QPushButton* button, int row) {
         button->setStyleSheet("background-color: red;");
     }
 
+//! A function that moves horse along the track randomly
 void startRace::advanceHorses() {
         for (int row = 0; row < numRows; ++row) {
             // Randomly decide if the horse moves this tick
@@ -164,6 +189,11 @@ void startRace::advanceHorses() {
         }
     }
 
+//! A function that places a horse in the result order that they arrived in the race
+/*!
+    \return boolean to place horse's in the order that they arrive
+    \param button Qt button to utilize as starting line
+*/
 bool startRace::placeHorse(int horseRow) {
         // Check if the horse is already placed in the results
         for (int x = 0; x < horsesFinished; x++) {
@@ -180,6 +210,7 @@ bool startRace::placeHorse(int horseRow) {
         }
         return false;
     }
+
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
