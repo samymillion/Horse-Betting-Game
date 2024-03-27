@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <QPalette>
 
 #include "startRace.h"
 #include "GameWindow.h"
@@ -48,6 +49,8 @@ void startRace::setupUI() {
         button->setFixedSize(470, 50);
         button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; color: white; border: 1px solid black;");
         gridLayout->addWidget(button, 0, 1);
+        connect(button, &QPushButton::clicked, this, &startRace::showHorseRoster);
+
 
         //! Betting interface
         //! Assuming GameWindow is properly defined elsewhere and handles betting logic
@@ -66,6 +69,50 @@ void startRace::setupUI() {
         connect(timer, &QTimer::timeout, this, &startRace::advanceHorses);
     }
 
+//! A function to assign and display horse statistics to help user select and bet
+void startRace::showHorseRoster() {
+    QDialog *horseRosterDialog = new QDialog(this);
+    horseRosterDialog->setWindowTitle("Horse Roster");
+    QVBoxLayout *layout = new QVBoxLayout(horseRosterDialog);
+    int numHorses = 5;
+
+    for (int i = 0; i < numHorses; ++i) {
+        QLabel *horseLabel = new QLabel("Horse " + QString::number(i+1) + " Statistics:");
+        int speed = rand() % 31 + 50; // Horses can go up to 80 mph
+        int strength = rand() % 101; // Generic ranking of strength to 100
+        QLabel *horseSpeedLabel = new QLabel("Speed: " + QString::number(speed) + " mph");
+        QLabel *horseStrengthLabel = new QLabel("Strength: " + QString::number(strength));
+        int health = (speed + strength)/2;
+        QLabel *horseHealthLabel = new QLabel("Overall Health: " + QString::number(health));
+
+        QPalette palette;
+        if (health <= 50) {
+            palette.setColor(QPalette::WindowText, Qt::red); // Set text color to red if health < 25
+        } else if (health >= 70) {
+            palette.setColor(QPalette::WindowText, Qt::green); // Set text color to green if health >= 75
+        } else {
+            palette.setColor(QPalette::WindowText, Qt::white); // Set text color to white for other cases
+        }
+
+        horseLabel->setPalette(palette);
+        horseSpeedLabel->setPalette(palette);
+        horseStrengthLabel->setPalette(palette);
+        horseHealthLabel->setPalette(palette);
+
+        
+        QFont font = horseLabel->font();
+        font.setPointSize(20); // Just making the Horse i Statistics bigger
+        horseLabel->setFont(font);
+              
+
+        layout->addWidget(horseLabel);
+        layout->addWidget(horseSpeedLabel);
+        layout->addWidget(horseStrengthLabel);
+        layout->addWidget(horseHealthLabel);
+    }
+
+    horseRosterDialog->exec();
+}
 
 //! A function that creates the top panel of buttons including money, start race, and game title bar
 /*!

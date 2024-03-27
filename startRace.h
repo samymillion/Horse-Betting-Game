@@ -32,6 +32,7 @@ private:
     int results[5];
 
     void setupUI();
+    void showHorseRoster();
     QHBoxLayout* createButtonBar();
     QPushButton* createButton(const QString &text, int width, int height, const QString &style);
     void createRaceTrack(QVBoxLayout *mainLayout);
