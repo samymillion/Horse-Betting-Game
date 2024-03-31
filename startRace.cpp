@@ -14,9 +14,10 @@
 #include <ctime>
 #include <iostream>
 #include <QPalette>
+#include <iostream>
+using namespace std;
 
 #include "startRace.h"
-#include "GameWindow.h"
 
 //! startRace runs the race logic and components related to the race
 startRace::startRace(QWidget *parent) : QWidget(parent), horsesFinished(0) {
@@ -37,6 +38,8 @@ void startRace::setupUI() {
 
         QGridLayout* gridLayout = new QGridLayout;
         QPushButton* button;
+
+        createHorses();
 
         //! Player stats button
         button = new QPushButton("PLAYER STATS");
@@ -78,17 +81,18 @@ void startRace::showHorseRoster() {
 
     for (int i = 0; i < numHorses; ++i) {
         QLabel *horseLabel = new QLabel("Horse " + QString::number(i+1) + " Statistics:");
-        int speed = rand() % 31 + 50; // Horses can go up to 80 mph
-        int strength = rand() % 101; // Generic ranking of strength to 100
+        int speed = horseList.at(i).getSpeedFactor();
+        int odds = horseList.at(i).getMoneyLine();
+        //int strength = rand() % 101; // Generic ranking of strength to 100
         QLabel *horseSpeedLabel = new QLabel("Speed: " + QString::number(speed) + " mph");
-        QLabel *horseStrengthLabel = new QLabel("Strength: " + QString::number(strength));
-        int health = (speed + strength)/2;
+        QLabel *horseOddsLabel = new QLabel("Odds: " + QString::number(odds));
+    /*    int health = (speed + strength)/2;
         QLabel *horseHealthLabel = new QLabel("Overall Health: " + QString::number(health));
-
+    */
         QPalette palette;
-        if (health <= 50) {
+        if (speed <= 5) {
             palette.setColor(QPalette::WindowText, Qt::red); // Set text color to red if health < 25
-        } else if (health >= 70) {
+        } else if (speed >= 7) {
             palette.setColor(QPalette::WindowText, Qt::green); // Set text color to green if health >= 75
         } else {
             palette.setColor(QPalette::WindowText, Qt::white); // Set text color to white for other cases
@@ -96,8 +100,8 @@ void startRace::showHorseRoster() {
 
         horseLabel->setPalette(palette);
         horseSpeedLabel->setPalette(palette);
-        horseStrengthLabel->setPalette(palette);
-        horseHealthLabel->setPalette(palette);
+        horseOddsLabel->setPalette(palette);
+    //   horseHealthLabel->setPalette(palette);
 
         
         QFont font = horseLabel->font();
@@ -107,8 +111,8 @@ void startRace::showHorseRoster() {
 
         layout->addWidget(horseLabel);
         layout->addWidget(horseSpeedLabel);
-        layout->addWidget(horseStrengthLabel);
-        layout->addWidget(horseHealthLabel);
+        layout->addWidget(horseOddsLabel);
+    //    layout->addWidget(horseHealthLabel);
     }
 
     horseRosterDialog->exec();
@@ -199,14 +203,21 @@ void startRace::setupStartingLineButton(QPushButton* button, int row) {
 //! A function that moves horse along the track randomly
 void startRace::advanceHorses() {
         for (int row = 0; row < numRows; ++row) {
-            // Randomly decide if the horse moves this tick
-            if (rand() % 2 == 0) { // 50% chance to move
+        double baseChance = 0.4; // Base chance for the horse to move (50%)
+        int speed = horseList.at(row).getSpeedFactor(); // Get the speed factor of the current horse
+        double adjustedChance = baseChance + (speed - 5) * 0.02; // Adjusted chance based on speed factor
+
+        double randomValue = static_cast<double>(rand()) / RAND_MAX;
+
+        std::cout << "Horse " << row << " speed: " << speed << ", adjustedChance: " << adjustedChance << std::endl; //debugging
+
+            if (randomValue < adjustedChance) { // If the random number generated is less than the probability
                 for (int col = numCols - 1; col > 0; --col) {
                     if (!trackButtons[row][col - 1]->icon().isNull()) {
                         // Advance horse
-                        trackButtons[row][col]->setIcon(trackButtons[row][col-1]->icon());
+                        trackButtons[row][col]->setIcon(trackButtons[row][col - 1]->icon());
                         trackButtons[row][col]->setIconSize(QSize(50, 50));
-                        trackButtons[row][col-1]->setIcon(QIcon());
+                        trackButtons[row][col - 1]->setIcon(QIcon());
                         break; // Stop moving this row's horse after it has advanced
                     }
                 }
@@ -240,7 +251,7 @@ void startRace::advanceHorses() {
                 }
             }
         }
-    }
+}
 
 //! A function that places a horse in the result order that they arrived in the race
 /*!
@@ -264,6 +275,47 @@ bool startRace::placeHorse(int horseRow) {
         return false;
     }
 
+
+std::vector<Horse> startRace::createHorses(){
+    Horse horseOne("HorseOne");
+    Horse horseTwo("HorseTwo");
+    Horse horseThree("HorseThree");
+    Horse horseFour("HorseFour");
+    Horse horseFive("HorseFive");
+    horseList.push_back(horseOne);
+    horseList.push_back(horseTwo);
+    horseList.push_back(horseThree);
+    horseList.push_back(horseFour);
+    horseList.push_back(horseFive);
+
+    for (Horse horse : horseList) { //debugging
+        std::cout << "Name: " << horse.getName() << ", Speed: " << horse.getSpeedFactor() << std::endl;
+    }
+
+    calculateMoneyLine();
+
+    return horseList;
+}
+
+void startRace::calculateMoneyLine() {
+    int totalSpeed = 0;
+    for (const Horse& horse : horseList) {
+        totalSpeed += horse.getSpeedFactor();
+    }
+
+    for (Horse& horse : horseList) {
+        double relativePerformance = static_cast<double>(horse.getSpeedFactor()) / totalSpeed;
+        double winningProbability = relativePerformance; // This is a simplified version.
+
+        if (winningProbability > 0.5) {
+            horse.setMoneyLine(-std::round((winningProbability / (1 - winningProbability)) * 100));
+        } else {
+            horse.setMoneyLine(std::round((1 - winningProbability) / winningProbability * 100));
+        }
+
+        std::cout << "winningProbability: " << winningProbability << ", odds: " << horse.getMoneyLine() << std::endl; //debugging
+    }
+}
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);

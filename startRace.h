@@ -9,6 +9,9 @@
 #include <QVBoxLayout>
 #include <QTimer>
 
+#include "gamewindow.h"
+#include "horse.h"
+
 class startRace : public QWidget {
     Q_OBJECT
 
@@ -30,6 +33,7 @@ private:
     QTimer *timer;
     int horsesFinished = 0;
     int results[5];
+    std::vector<Horse> horseList;
 
     void setupUI();
     void showHorseRoster();
@@ -38,6 +42,8 @@ private:
     void createRaceTrack(QVBoxLayout *mainLayout);
     void setupStartingLineButton(QPushButton *button, int row);
     bool placeHorse(int horseRow);
+    std::vector<Horse> createHorses();
+    void calculateMoneyLine();
 };
 
 #endif // STARTRACE_H
