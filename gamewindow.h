@@ -8,6 +8,7 @@
 #include <QPair>
 #include <QGridLayout>
 #include <QLineEdit>
+#include <QListWidget>
 
 #include "bet.h"
 
@@ -21,6 +22,7 @@ private slots:
     void onHorseSelected();
     void onBetEntered();
     void updateMoneyPool(double newAmount);
+    void displayBettingHistory();
 
 public slots:
     void checkBetResult(int winningHorseIndex);
@@ -36,6 +38,9 @@ private:
     //bet object
     Bet *bet;
     QLabel *moneyPoolLabel;
+
+    //betting history
+    QListWidget *bettingHistoryWidget;
     
 };
 

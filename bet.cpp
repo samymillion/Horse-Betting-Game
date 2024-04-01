@@ -70,6 +70,26 @@ bool Bet::placeBet()
     \param amount the bet amount that the user set this round.
     \return double the initial bet amount, which represents the payout.
 */
-double Bet::calculatePayout(double amount){
-    return amount+amount;
+double Bet::calculatePayout(double amount, int horseIndex, bool isWin){
+
+    double payout = 0; 
+
+    if (isWin) {
+        payout = amount+amount;
+    } 
+    
+    BetInfo newBet;
+    newBet.amount = amount;
+    newBet.horseIndex = horseIndex;
+    newBet.payout = payout;
+    m_bettingHistory.push_back(newBet);
+
+    emit moneyPoolChanged(m_moneyPool);
+
+    return payout;
+}
+
+//NEW BETTING HISTORY
+const std::vector<Bet::BetInfo>& Bet::getBettingHistory() const {
+    return m_bettingHistory;
 }

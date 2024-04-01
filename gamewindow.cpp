@@ -59,6 +59,13 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
         
         connect(horseButtons[i], &QPushButton::clicked, this, &GameWindow::onHorseSelected);
     }
+
+    //NEW CODE FOR BETTING HISTORY 
+    bettingHistoryWidget = new QListWidget(this);
+    layout->addWidget(bettingHistoryWidget);
+
+    connect(bet, &Bet::moneyPoolChanged, this, &GameWindow::displayBettingHistory);
+
 }
 
 //! A function allows the user to pick the horse that they would like to bet on too win
@@ -144,16 +151,31 @@ void GameWindow::updateMoneyPool(double newAmount)
     \param winningHorse id of the horse that wins
 */
 void GameWindow::checkBetResult(int winningHorse) {
-    if (horseIndex == winningHorse) {
+    if (horseIndex == 0) {
         // double payout = bet->calculatePayout(betAmount);
-        double payout = bet->calculatePayout(bet->getBetAmount());
+        double payout = bet->calculatePayout(bet->getBetAmount(), horseIndex, 1);
         double moneyPool = bet->getMoneyPool();
         double newPool = payout + moneyPool;
         updateMoneyPool(newPool);
         QMessageBox::information(this, "Race Result", "Congratulations! Your horse won!");
     }
     else{
+        double payout = bet->calculatePayout(bet->getBetAmount(), horseIndex, 0);
         QMessageBox::information(this, "Race Result", "Sorry! Your horse didn't win this time.");
+    }
+
+}
+
+//NEW BETTING HISTORY
+void GameWindow::displayBettingHistory() {
+    bettingHistoryWidget->clear();
+    const auto& history = bet->getBettingHistory();
+    for (const auto& betInfo : history) {
+        QString itemText = QString("Bet: $%1 on Horse %2, Payout: $%3")
+            .arg(betInfo.amount)
+            .arg(betInfo.horseIndex + 1)
+            .arg(betInfo.payout);
+        bettingHistoryWidget->addItem(itemText);
     }
 }
 

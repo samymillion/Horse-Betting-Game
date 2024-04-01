@@ -9,6 +9,12 @@ class Bet : public QObject
 {
     Q_OBJECT
 public:
+    struct BetInfo {
+        double amount;
+        int horseIndex;
+        double payout;
+    };
+
     //! A constructor.
     /*!
       A more elaborate description of the constructor.
@@ -43,6 +49,7 @@ public:
     /*!
       \return true if the bet is within the limits of the money pool, false otherwise.
     */
+    // bool placeBet(double amount, int horseIndex); // Modified declaration of placeBet method
     bool placeBet();
 
     //! A function that takes the bet amount set by the user and returns two times the initial bet to represent the payout (payout is 200% of bet amount).
@@ -50,7 +57,10 @@ public:
       \param amount the bet amount that the user set this round.
       \return double the initial bet amount, which represents the payout.
     */
-    double calculatePayout(double amount);
+    double calculatePayout(double amount, int horseIndex, bool isWin);
+
+    //! A function that returns of vector of past betting history
+    const std::vector<BetInfo>& getBettingHistory() const;
 
 signals:
     void moneyPoolChanged(double newAmount);
@@ -62,6 +72,8 @@ private:
 
     //! private variable that stores the current money pool
     double m_moneyPool;
+
+    std::vector<BetInfo> m_bettingHistory;
 };
 
 #endif // BET_H
