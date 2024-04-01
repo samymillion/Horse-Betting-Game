@@ -21,6 +21,7 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
     setFixedSize(470, 400);
     setStyleSheet("background-color: white;");
     const QString iconPaths[5] = {":/icons/brown.png", ":/icons/blue.png", ":/icons/green.png", ":/icons/red.png", ":/icons/yellow.png"};
+    const QString names[5] = {"Cocoa Comet", "Ocean Breeze", "Jade Jumper", "Ruby Rocket", "Amber Avalanche"};
 
 
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -37,7 +38,6 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
     layout->addWidget(continueButton);
 
     connect(continueButton, &QPushButton::clicked, this, &GameWindow::onContinueClicked);
-
     //! Set up initial money pool 
     double initialMoneyPool = 100.0; // Initial money pool amount
     bet = new Bet(initialMoneyPool, this);
@@ -49,8 +49,8 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
 
     //! Set icons for horses
     for (int i = 0; i < 5; ++i) {
-        horseButtons[i] = new QPushButton("Horse " + QString::number(i + 1), this);
-        horseButtons[i]->setFixedSize(100, 50);
+        horseButtons[i] = new QPushButton(names[i], this);
+        horseButtons[i]->setFixedSize(120, 50);
         horseButtons[i]->setVisible(false); 
 
         horseButtons[i]->setIcon(QIcon(iconPaths[i]));
@@ -92,7 +92,7 @@ void GameWindow::onHorseSelected() {
             }
         }
         horseSelected = senderButton->text();
-       
+
 
         welcomeLabel->setText("Pick a bet amount");
         for (int i = 0; i < 5; ++i) {
@@ -102,7 +102,7 @@ void GameWindow::onHorseSelected() {
         betInput = new QLineEdit(this);
         betInput->setPlaceholderText("Enter bet amount from $1 to $" + QString::number(bet->getMoneyPool()));
         layout()->addWidget(betInput);
-        
+
         connect(betInput, &QLineEdit::returnPressed, this, &GameWindow::onBetEntered);
 
     }
@@ -122,6 +122,17 @@ void GameWindow::onBetEntered() {
         //! Bet successfully placed
         moneyPoolLabel->setText("Money Pool: " + QString::number(bet->getMoneyPool()));
         QMessageBox::information(this, "Success", "Bet placed successfully!");
+
+        // Disable further betting until next race
+        for (QPushButton* button : horseButtons) {
+            button->setEnabled(false);
+        }
+        if (betInput) {
+            betInput->setEnabled(false);
+            betInput->hide(); // Hide bet input to indicate betting is closed
+        }
+        welcomeLabel->setText("Waiting for next race...");
+        emit betPlaced();
     } else {
         //! Bet exceeds money pool
         QMessageBox::warning(this, "Error", "Bet amount exceeds money pool!");
@@ -143,10 +154,9 @@ void GameWindow::updateMoneyPool(double newAmount)
 /*!
     \param winningHorse id of the horse that wins
 */
-void GameWindow::checkBetResult(int winningHorse) {
+void GameWindow::checkBetResult(int winningHorse, int odds) {
     if (horseIndex == winningHorse) {
-        // double payout = bet->calculatePayout(betAmount);
-        double payout = bet->calculatePayout(bet->getBetAmount());
+        double payout = bet->calculatePayout(bet->getBetAmount(), odds);
         double moneyPool = bet->getMoneyPool();
         double newPool = payout + moneyPool;
         updateMoneyPool(newPool);
@@ -157,5 +167,31 @@ void GameWindow::checkBetResult(int winningHorse) {
     }
 }
 
+void GameWindow::resetWindow() {
+    // Reset the welcome label to prompt user to pick a horse
+    welcomeLabel->setText("Welcome to the Horse Betting Game!");
+    welcomeLabel->show();
+
+    continueButton->hide();
+
+    // Re-enable and show horse selection buttons
+    for (QPushButton* button : horseButtons) {
+        button->setEnabled(true);
+        button->setVisible(true);
+    }
+
+    //Hide the bet input if it exists and clear it for the next input
+    if (betInput) {
+        betInput->hide();
+        betInput->clear();
+    }
+
+    //Reset the horseIndex
+    horseIndex = -1;
+
+    // Ensure the money pool label is updated to reflect current state
+    moneyPoolLabel->setText("Money Pool: " + QString::number(bet->getMoneyPool()));
+    moneyPoolLabel->show();
+}
 
 

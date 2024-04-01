@@ -23,7 +23,12 @@ private slots:
     void updateMoneyPool(double newAmount);
 
 public slots:
-    void checkBetResult(int winningHorseIndex);
+    void checkBetResult(int winningHorseIndex, int odds);
+    void resetWindow();
+
+signals:
+    void betPlaced();
+
 private:
     QLabel *welcomeLabel;
     QPushButton *continueButton;
@@ -36,7 +41,6 @@ private:
     //bet object
     Bet *bet;
     QLabel *moneyPoolLabel;
-    
 };
 
 

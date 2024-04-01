@@ -9,8 +9,8 @@
 #include <QVBoxLayout>
 #include <QTimer>
 
-#include "gamewindow.h"
 #include "horse.h"
+#include "gamewindow.h"
 
 class startRace : public QWidget {
     Q_OBJECT
@@ -19,7 +19,8 @@ public:
     startRace(QWidget *parent = nullptr);
 
 signals:
-    void raceFinished(int winningHorseIndex);
+    void raceFinished(int winningHorseIndex, int odds);
+    void resetBet();
 
 private slots:
     void advanceHorses();
@@ -34,6 +35,7 @@ private:
     int horsesFinished = 0;
     int results[5];
     std::vector<Horse> horseList;
+    bool betPlaced = 0;
 
     void setupUI();
     void showHorseRoster();
@@ -44,6 +46,8 @@ private:
     bool placeHorse(int horseRow);
     std::vector<Horse> createHorses();
     void calculateMoneyLine();
+    void promptRaceRestart();
+    void resetRace();
 };
 
 #endif // STARTRACE_H

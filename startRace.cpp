@@ -59,6 +59,11 @@ void startRace::setupUI() {
         //! Assuming GameWindow is properly defined elsewhere and handles betting logic
         GameWindow* gameWindow = new GameWindow();
         connect(this, &startRace::raceFinished, gameWindow, &GameWindow::checkBetResult);
+        connect(this, &startRace::resetBet, gameWindow, &GameWindow::resetWindow);
+        connect(gameWindow, &GameWindow::betPlaced, this, [this]() {
+            betPlaced = true;
+        });
+
         gridLayout->addWidget(gameWindow, 0, 2);
 
         createRaceTrack(mainLayout);
@@ -80,11 +85,11 @@ void startRace::showHorseRoster() {
     int numHorses = 5;
 
     for (int i = 0; i < numHorses; ++i) {
-        QLabel *horseLabel = new QLabel("Horse " + QString::number(i+1) + " Statistics:");
+        QLabel *horseLabel = new QLabel(QString::fromStdString(horseList.at(i).getName()));
         int speed = horseList.at(i).getSpeedFactor();
         int odds = horseList.at(i).getMoneyLine();
         //int strength = rand() % 101; // Generic ranking of strength to 100
-        QLabel *horseSpeedLabel = new QLabel("Speed: " + QString::number(speed) + " mph");
+        //QLabel *horseSpeedLabel = new QLabel("Speed: " + QString::number(speed) + " mph");
         QLabel *horseOddsLabel = new QLabel("Odds: " + QString::number(odds));
     /*    int health = (speed + strength)/2;
         QLabel *horseHealthLabel = new QLabel("Overall Health: " + QString::number(health));
@@ -99,7 +104,7 @@ void startRace::showHorseRoster() {
         }
 
         horseLabel->setPalette(palette);
-        horseSpeedLabel->setPalette(palette);
+    //    horseSpeedLabel->setPalette(palette);
         horseOddsLabel->setPalette(palette);
     //   horseHealthLabel->setPalette(palette);
 
@@ -110,7 +115,7 @@ void startRace::showHorseRoster() {
               
 
         layout->addWidget(horseLabel);
-        layout->addWidget(horseSpeedLabel);
+    //    layout->addWidget(horseSpeedLabel);
         layout->addWidget(horseOddsLabel);
     //    layout->addWidget(horseHealthLabel);
     }
@@ -133,12 +138,22 @@ QHBoxLayout* startRace::createButtonBar() {
         //! Start Race Button
         startRaceButton = createButton("S T A R T   R A C E", 600, 50, "font: bold; background-image: url(:/icons/gradient.png); background-position: center; font-size: 30px; color: white; border: 3px solid white; border-radius: 15px;");
         layout->addWidget(startRaceButton);
-        connect(startRaceButton, &QPushButton::clicked, this, [=]() {
-            std::cout << "Test passed (Start Button Initiates the Race)\n";
-            timer->start(500);
-            startRaceButton->setEnabled(false);
+        connect(startRaceButton, &QPushButton::clicked, this, [this]() {
+            if (!betPlaced) {
+                QMessageBox messageBox;
+                messageBox.setWindowTitle("Action Required");
+                messageBox.setText("Place a bet first!");
+                messageBox.setStyleSheet("QMessageBox { background-color: white; }");
+                messageBox.setIcon(QMessageBox::Warning);
+                messageBox.setStandardButtons(QMessageBox::Ok);
+                messageBox.exec();
+            } else {
+                std::cout << "Test passed (Start Button Initiates the Race)\n";
+                timer->start(500);
+                startRaceButton->setEnabled(false);
+                betPlaced = false; // Reset this flag to ensure a bet is placed for each new race
+            }
         });
-
         //! Version Display Button
         button = createButton("PIXELDERBY v1.0", 300, 50, "font-family: Verdana; background-image: url(:/icons/gold.png); background-position: center; font-size: 25px; color: black; border: 1px solid black; border-radius: 5px;");
         layout->addWidget(button);
@@ -203,7 +218,7 @@ void startRace::setupStartingLineButton(QPushButton* button, int row) {
 //! A function that moves horse along the track randomly
 void startRace::advanceHorses() {
         for (int row = 0; row < numRows; ++row) {
-        double baseChance = 0.4; // Base chance for the horse to move (50%)
+        double baseChance = 0.5; // Base chance for the horse to move (50%)
         int speed = horseList.at(row).getSpeedFactor(); // Get the speed factor of the current horse
         double adjustedChance = baseChance + (speed - 5) * 0.02; // Adjusted chance based on speed factor
 
@@ -234,19 +249,20 @@ void startRace::advanceHorses() {
                     std::cout << "Test passed (Race Ends after ALL horses reach the finish line)\n";
                     timer->stop(); // Stop the race
                     QMessageBox messageBox;
-                    messageBox.setText(QString("Horse %1 wins! \n"
-                                               "Horse %2 was the runner up. \n"
-                                               "Horse %3 finished in third place. \n"
-                                               "Horse %4 finished in fourth place. \n"
-                                               "Horse %5 had a bad day!")
-                                           .arg(results[0]+1)
-                                           .arg(results[1]+1)
-                                           .arg(results[2]+1)
-                                           .arg(results[3]+1)
-                                           .arg(results[4]+1));
+                    messageBox.setText(QString("%1 wins! \n"
+                                               "%2 was the runner up. \n"
+                                               "%3 finished in third place. \n"
+                                               "%4 finished in fourth place. \n"
+                                               "%5 had a bad day!")
+                                           .arg(QString::fromStdString(horseList.at(results[0]).getName()))
+                                           .arg(QString::fromStdString(horseList.at(results[1]).getName()))
+                                           .arg(QString::fromStdString(horseList.at(results[2]).getName()))
+                                           .arg(QString::fromStdString(horseList.at(results[3]).getName()))
+                                           .arg(QString::fromStdString(horseList.at(results[4]).getName())));
                     messageBox.exec();
                     std::cout << "Test passed (Race results are displayed on a pop up window successfully)\n";
-                    emit raceFinished(results[0]);
+                    emit raceFinished(results[0], horseList.at(results[0]).getMoneyLine());
+                    promptRaceRestart();
                     break;
                 }
             }
@@ -277,11 +293,11 @@ bool startRace::placeHorse(int horseRow) {
 
 
 std::vector<Horse> startRace::createHorses(){
-    Horse horseOne("HorseOne");
-    Horse horseTwo("HorseTwo");
-    Horse horseThree("HorseThree");
-    Horse horseFour("HorseFour");
-    Horse horseFive("HorseFive");
+    Horse horseOne("Cocoa Comet");
+    Horse horseTwo("Ocean Breeze");
+    Horse horseThree("Jade Jumper");
+    Horse horseFour("Ruby Rocket");
+    Horse horseFive("Amber Avalanche");
     horseList.push_back(horseOne);
     horseList.push_back(horseTwo);
     horseList.push_back(horseThree);
@@ -298,24 +314,83 @@ std::vector<Horse> startRace::createHorses(){
 }
 
 void startRace::calculateMoneyLine() {
-    int totalSpeed = 0;
+    double totalSpeed = 0;
+    std::vector<double> winningProbabilities(horseList.size(), 0.0);
+
+    //Calculate total speed
     for (const Horse& horse : horseList) {
         totalSpeed += horse.getSpeedFactor();
     }
 
-    for (Horse& horse : horseList) {
-        double relativePerformance = static_cast<double>(horse.getSpeedFactor()) / totalSpeed;
-        double winningProbability = relativePerformance; // This is a simplified version.
+    //Calculate raw probabilities based on relative speed
+    for (size_t i = 0; i < horseList.size(); ++i) {
+        winningProbabilities[i] = horseList[i].getSpeedFactor() / totalSpeed;
+    }
 
-        if (winningProbability > 0.5) {
-            horse.setMoneyLine(-std::round((winningProbability / (1 - winningProbability)) * 100));
+    //Calculate average winning probability
+    double averageWinningProbability = 0.0;
+    for (double prob : winningProbabilities) {
+        averageWinningProbability += prob;
+    }
+    averageWinningProbability /= horseList.size();
+
+    //Calculate Moneyline based on comparison with averageWinningProbability
+    for (size_t i = 0; i < horseList.size(); ++i) {
+        double winningProbability = winningProbabilities[i];
+
+        int moneyLine;
+        if (winningProbability > averageWinningProbability) {
+            moneyLine = -std::round(((winningProbability / (1 - winningProbability)) * 100)) - 100;
         } else {
-            horse.setMoneyLine(std::round((1 - winningProbability) / winningProbability * 100));
+            moneyLine = std::round((1 - winningProbability) / winningProbability * 100);
         }
 
-        std::cout << "winningProbability: " << winningProbability << ", odds: " << horse.getMoneyLine() << std::endl; //debugging
+        horseList[i].setMoneyLine(moneyLine);
+        std::cout << "Horse " << horseList[i].getName() << " winningProbability: " << winningProbability << ", odds: " << horseList[i].getMoneyLine() << std::endl; // Debugging
     }
 }
+
+
+void startRace::promptRaceRestart() {
+    QMessageBox messageBox;
+    messageBox.setWindowTitle("Race Finished");
+    messageBox.setText("Would you like to race again or quit?");
+    messageBox.setStandardButtons(QMessageBox::Retry | QMessageBox::Close);
+    messageBox.setDefaultButton(QMessageBox::Retry);
+    int choice = messageBox.exec();
+
+    switch(choice) {
+    case QMessageBox::Retry:
+        resetRace();
+        break;
+    case QMessageBox::Close:
+    default:
+        QApplication::quit();
+        break;
+    }
+}
+
+
+void startRace::resetRace() {
+    // Reset the track for all horses
+    for(int row = 0; row < numRows; ++row) {
+        for(QPushButton* button : trackButtons[row]) {
+            button->setIcon(QIcon()); // Clear the icon to reset the track
+        }
+        // Place the horses back at the starting line
+        if(!trackButtons[row].isEmpty()) {
+            setupStartingLineButton(trackButtons[row][0], row);
+        }
+    }
+
+    horseList.clear();
+    createHorses();
+    emit resetBet();
+
+    horsesFinished = 0; // Reset the counter
+    startRaceButton->setEnabled(true); // Re-enable the start race button
+}
+
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);

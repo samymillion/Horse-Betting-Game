@@ -70,6 +70,17 @@ bool Bet::placeBet()
     \param amount the bet amount that the user set this round.
     \return double the initial bet amount, which represents the payout.
 */
-double Bet::calculatePayout(double amount){
-    return amount+amount;
+double Bet::calculatePayout(int amount, int odds) {
+    int payout = 0;
+
+    if (odds > 0) {
+        // For positive odds
+        payout = round(amount + (amount * odds / 100.0));
+    } else {
+        // For negative odds (odds value is negative, so make it positive for calculation)
+        payout = round(amount + (amount / (-odds / 100.0)));
+    }
+
+    return payout;
 }
+

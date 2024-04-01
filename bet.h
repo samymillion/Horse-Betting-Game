@@ -50,7 +50,7 @@ public:
       \param amount the bet amount that the user set this round.
       \return double the initial bet amount, which represents the payout.
     */
-    double calculatePayout(double amount);
+    double calculatePayout(int amount, int odds);
 
 signals:
     void moneyPoolChanged(double newAmount);
