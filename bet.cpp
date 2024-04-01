@@ -1,6 +1,7 @@
 //!  A bet class that contains a bet object to store information on bet amount, money pool, and calculates payout. 
 #include "bet.h"
 #include <iostream>
+#include <cmath>
 // using namespace std;
 
 //! A constructor.
@@ -70,17 +71,31 @@ bool Bet::placeBet()
     \param amount the bet amount that the user set this round.
     \return double the initial bet amount, which represents the payout.
 */
-double Bet::calculatePayout(int amount, int odds) {
+double Bet::calculatePayout(int amount, int odds, int horseIndex, bool isWin) {
+    
     int payout = 0;
 
-    if (odds > 0) {
-        // For positive odds
-        payout = round(amount + (amount * odds / 100.0));
-    } else {
-        // For negative odds (odds value is negative, so make it positive for calculation)
-        payout = round(amount + (amount / (-odds / 100.0)));
+    if (isWin == true){
+
+        if (odds > 0) {
+            // For positive odds
+            payout = round(amount + (amount * odds / 100.0));
+        } else {
+            // For negative odds (odds value is negative, so make it positive for calculation)
+            payout = round(amount + (amount / (-odds / 100.0)));
+        }
     }
+
+    BetInfo newBet;
+    newBet.amount = amount;
+    newBet.horseIndex = horseIndex;
+    newBet.payout = payout;
+    m_bettingHistory.push_back(newBet);
 
     return payout;
 }
 
+//NEW BETTING HISTORY
+const std::vector<Bet::BetInfo>& Bet::getBettingHistory() const {
+    return m_bettingHistory;
+}

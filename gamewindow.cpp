@@ -21,36 +21,41 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
     setFixedSize(470, 400);
     setStyleSheet("background-color: white;");
     const QString iconPaths[5] = {":/icons/brown.png", ":/icons/blue.png", ":/icons/green.png", ":/icons/red.png", ":/icons/yellow.png"};
-    const QString names[5] = {"Cocoa Comet", "Ocean Breeze", "Jade Jumper", "Ruby Rocket", "Amber Avalanche"};
+    const QString names[5] = {"Cocoa Comet", "Ocean Breeze", "Jade Jumper", "Ruby Rocket", "Lemon Lucky"};
 
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignCenter);
 
-    welcomeLabel = new QLabel("Welcome to the Horse Betting Game!", this);
-    welcomeLabel->setFont(QFont("Arial", 20, QFont::Bold));
-    welcomeLabel->setStyleSheet("color: black;");
+    welcomeLabel = new QLabel("WELCOME TO PIXEL DERBY!!\nPRESS CONTINUE TO BET ON A HORSE", this);
+    welcomeLabel->setFixedSize(470, 50);
+    welcomeLabel->setAlignment(Qt::AlignHCenter);
+    welcomeLabel->setStyleSheet("font-family: Trebuchet MS Bold; background-color: #292b29; background-position: center; font-size: 15px; color: white; border: 1px solid black;");
     layout->addWidget(welcomeLabel);
 
   	//! Continue into game
-    continueButton = new QPushButton("Continue", this);
-    continueButton->setFixedSize(100, 50);
+    continueButton = new QPushButton("CONTINUE", this);
+    continueButton->setFixedSize(470, 50);
+    continueButton->setStyleSheet("font-family: Trebuchet MS Bold; background-color: #e3e1da; background-position: center; color: black; border: 3px solid #282e42; border-radius: 5px;");
     layout->addWidget(continueButton);
+    layout->setAlignment(continueButton, Qt::AlignTop | Qt::AlignHCenter);
 
     connect(continueButton, &QPushButton::clicked, this, &GameWindow::onContinueClicked);
     //! Set up initial money pool 
     double initialMoneyPool = 100.0; // Initial money pool amount
     bet = new Bet(initialMoneyPool, this);
     connect(bet, &Bet::moneyPoolChanged, this, &GameWindow::updateMoneyPool); //emitted by placeBet() function in bet.cpp
-    moneyPoolLabel = new QLabel("Money Pool: " + QString::number(bet->getMoneyPool()), this);
-    moneyPoolLabel->setFont(QFont("Arial", 20, QFont::Bold));
-    moneyPoolLabel->setStyleSheet("color: black;");
+
+    moneyPoolLabel = new QLabel("MONEY POOL: $" + QString::number(bet->getMoneyPool()), this);
+    moneyPoolLabel->setFixedSize(470, 50);
+    moneyPoolLabel->setAlignment(Qt::AlignCenter);
+    moneyPoolLabel->setStyleSheet("font-family: Trebuchet MS Bold; background-color: #0f111a; background-position: center; font-size: 25px; color: white; border: 3px solid #282e42; border-radius: 5px;");
     layout->addWidget(moneyPoolLabel);
 
     //! Set icons for horses
     for (int i = 0; i < 5; ++i) {
         horseButtons[i] = new QPushButton(names[i], this);
-        horseButtons[i]->setFixedSize(120, 50);
+        horseButtons[i]->setFixedSize(470, 50);
         horseButtons[i]->setVisible(false); 
 
         horseButtons[i]->setIcon(QIcon(iconPaths[i]));
@@ -68,7 +73,7 @@ void GameWindow::onContinueClicked() {
 
     std::cout << "Test passed (Continue Button Works)\n";
     //! User to pick a horse
-    welcomeLabel->setText("Pick a horse");
+    welcomeLabel->setText("\nPICK A HORSE");
     continueButton->hide();
 
     for (int i = 0; i < 5; ++i) {
@@ -94,13 +99,13 @@ void GameWindow::onHorseSelected() {
         horseSelected = senderButton->text();
 
 
-        welcomeLabel->setText("Pick a bet amount");
+        welcomeLabel->setText("\nPICK A BET AMOUNT");
         for (int i = 0; i < 5; ++i) {
             horseButtons[i]->hide();
         }
         //! Show the bet input field
         betInput = new QLineEdit(this);
-        betInput->setPlaceholderText("Enter bet amount from $1 to $" + QString::number(bet->getMoneyPool()));
+        betInput->setPlaceholderText("ENTER A BET AMOUNT FROM $1 TO $" + QString::number(bet->getMoneyPool()));
         layout()->addWidget(betInput);
 
         connect(betInput, &QLineEdit::returnPressed, this, &GameWindow::onBetEntered);
@@ -120,7 +125,9 @@ void GameWindow::onBetEntered() {
     bet->setBetAmount(betAmount);
     if (bet->placeBet()) {
         //! Bet successfully placed
-        moneyPoolLabel->setText("Money Pool: " + QString::number(bet->getMoneyPool()));
+        moneyPoolLabel->setText("MONEY POOL: $" + QString::number(bet->getMoneyPool()));
+        moneyPoolLabel->setAlignment(Qt::AlignCenter);
+        moneyPoolLabel->setStyleSheet("font-family: Trebuchet MS; background-color: #0f111a; background-position: center; font-size: 25px; color: white; border: 3px solid #282e42; border-radius: 5px;");
         QMessageBox::information(this, "Success", "Bet placed successfully!");
 
         // Disable further betting until next race
@@ -156,13 +163,14 @@ void GameWindow::updateMoneyPool(double newAmount)
 */
 void GameWindow::checkBetResult(int winningHorse, int odds) {
     if (horseIndex == winningHorse) {
-        double payout = bet->calculatePayout(bet->getBetAmount(), odds);
+        double payout = bet->calculatePayout(bet->getBetAmount(), odds, horseIndex, 1);
         double moneyPool = bet->getMoneyPool();
         double newPool = payout + moneyPool;
         updateMoneyPool(newPool);
         QMessageBox::information(this, "Race Result", "Congratulations! Your horse won!");
     }
     else{
+        double payout = bet->calculatePayout(bet->getBetAmount(), odds, horseIndex, 0);
         QMessageBox::information(this, "Race Result", "Sorry! Your horse didn't win this time.");
     }
 }
@@ -170,7 +178,9 @@ void GameWindow::checkBetResult(int winningHorse, int odds) {
 void GameWindow::resetWindow() {
     // Reset the welcome label to prompt user to pick a horse
     welcomeLabel->setText("Welcome to the Horse Betting Game!");
+    
     welcomeLabel->show();
+    
 
     continueButton->hide();
 
@@ -192,6 +202,34 @@ void GameWindow::resetWindow() {
     // Ensure the money pool label is updated to reflect current state
     moneyPoolLabel->setText("Money Pool: " + QString::number(bet->getMoneyPool()));
     moneyPoolLabel->show();
+}
+
+//NEW BETTING HISTORY
+void GameWindow::displayBettingHistory() {
+    QDialog *betHistoryDialog = new QDialog(this);
+    betHistoryDialog->setWindowTitle("Bet History");
+    QVBoxLayout *layout = new QVBoxLayout(betHistoryDialog);
+
+    const auto& history = bet->getBettingHistory();
+
+    const QString names[5] = {"Cocoa Comet", "Ocean Breeze", "Jade Jumper", "Ruby Rocket", "Lemon Lucky"};
+ 
+    if (history.empty()) {
+        layout->addWidget(new QLabel("No History of Races to Show"));
+    } else {
+
+        for (const auto& betInfo : history) {
+
+            QString itemText = QString("Bet: $%1 on " + names[betInfo.horseIndex] + " Payout: $%2")
+                .arg(betInfo.amount)
+                .arg(betInfo.payout);
+            layout->addWidget(new QLabel(itemText));
+        }
+    }
+
+    betHistoryDialog->setLayout(layout);
+    betHistoryDialog->exec(); 
+
 }
 
 

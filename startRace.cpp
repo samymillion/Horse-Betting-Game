@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <cmath>
 #include <QWidget>
 #include <QPalette>
 #include <QColor>
@@ -27,6 +28,9 @@ startRace::startRace(QWidget *parent) : QWidget(parent), horsesFinished(0) {
 
 //! A function to setup aspects of the race within the gamewindow 
 void startRace::setupUI() {
+
+        GameWindow* gameWindow = new GameWindow();
+
         std::cout << "Test passed (GUI is displayed successfully)\n";
         setWindowTitle("PIXEL DERBY 2024");
         setStyleSheet("background-color: #171a17;");
@@ -40,31 +44,34 @@ void startRace::setupUI() {
         QPushButton* button;
 
         createHorses();
-
+        
         //! Player stats button
-        button = new QPushButton("PLAYER STATS");
+        button = new QPushButton("BETTING HISTORY");
         button->setFixedSize(470, 50);
         button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; color: white; border: 1px solid black;");
         gridLayout->addWidget(button, 0, 0);
+        connect(button, &QPushButton::clicked, gameWindow, &GameWindow::displayBettingHistory);
 
         //! Horse roster button
         button = new QPushButton("HORSE ROSTER");
         button->setFixedSize(470, 50);
         button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; color: white; border: 1px solid black;");
-        gridLayout->addWidget(button, 0, 1);
+        gridLayout->addWidget(button, 0, 2);
         connect(button, &QPushButton::clicked, this, &startRace::showHorseRoster);
 
 
         //! Betting interface
         //! Assuming GameWindow is properly defined elsewhere and handles betting logic
-        GameWindow* gameWindow = new GameWindow();
+        
         connect(this, &startRace::raceFinished, gameWindow, &GameWindow::checkBetResult);
         connect(this, &startRace::resetBet, gameWindow, &GameWindow::resetWindow);
         connect(gameWindow, &GameWindow::betPlaced, this, [this]() {
             betPlaced = true;
         });
 
-        gridLayout->addWidget(gameWindow, 0, 2);
+        gridLayout->addWidget(gameWindow, 0, 1);
+        gridLayout->setAlignment(gameWindow, Qt::AlignTop | Qt::AlignHCenter);
+        gridLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
         createRaceTrack(mainLayout);
         mainLayout->addLayout(gridLayout);
@@ -132,7 +139,7 @@ QHBoxLayout* startRace::createButtonBar() {
         QPushButton* button;
 
         //! Bet Display Button
-        button = createButton("$42000", 200, 50, "font-family: Trebuchet MS Bold; background-color: #0f111a; background-position: center; font-size: 30px; color: white; border: 3px solid #282e42; border-radius: 5px;");
+        button = createButton("GROUP#30", 300, 50, "font-family: Verdana; background-color: #6e0885; background-position: center; font-size: 25px; color: white; border: 3px solid #282e42; border-radius: 5px;");
         layout->addWidget(button);
 
         //! Start Race Button
@@ -297,7 +304,7 @@ std::vector<Horse> startRace::createHorses(){
     Horse horseTwo("Ocean Breeze");
     Horse horseThree("Jade Jumper");
     Horse horseFour("Ruby Rocket");
-    Horse horseFive("Amber Avalanche");
+    Horse horseFive("Lemon Lucky");
     horseList.push_back(horseOne);
     horseList.push_back(horseTwo);
     horseList.push_back(horseThree);
@@ -340,9 +347,9 @@ void startRace::calculateMoneyLine() {
 
         int moneyLine;
         if (winningProbability > averageWinningProbability) {
-            moneyLine = -std::round(((winningProbability / (1 - winningProbability)) * 100)) - 100;
+            moneyLine = -round(((winningProbability / (1 - winningProbability)) * 100)) - 100;
         } else {
-            moneyLine = std::round((1 - winningProbability) / winningProbability * 100);
+            moneyLine = round((1 - winningProbability) / winningProbability * 100);
         }
 
         horseList[i].setMoneyLine(moneyLine);

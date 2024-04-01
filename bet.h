@@ -9,6 +9,13 @@ class Bet : public QObject
 {
     Q_OBJECT
 public:
+
+    struct BetInfo {
+        double amount;
+        int horseIndex;
+        double payout;
+    };
+
     //! A constructor.
     /*!
       A more elaborate description of the constructor.
@@ -50,7 +57,9 @@ public:
       \param amount the bet amount that the user set this round.
       \return double the initial bet amount, which represents the payout.
     */
-    double calculatePayout(int amount, int odds);
+    double calculatePayout(int amount, int odds, int horseIndex, bool isWin);
+
+    const std::vector<BetInfo>& getBettingHistory() const;
 
 signals:
     void moneyPoolChanged(double newAmount);
@@ -62,6 +71,8 @@ private:
 
     //! private variable that stores the current money pool
     double m_moneyPool;
+
+    std::vector<BetInfo> m_bettingHistory;
 };
 
 #endif // BET_H
