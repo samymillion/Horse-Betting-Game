@@ -151,7 +151,7 @@ void GameWindow::updateMoneyPool(double newAmount)
     \param winningHorse id of the horse that wins
 */
 void GameWindow::checkBetResult(int winningHorse) {
-    if (horseIndex == 0) {
+    if (horseIndex == winningHorse) {
         // double payout = bet->calculatePayout(betAmount);
         double payout = bet->calculatePayout(bet->getBetAmount(), horseIndex, 1);
         double moneyPool = bet->getMoneyPool();
