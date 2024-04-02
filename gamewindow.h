@@ -22,10 +22,15 @@ private slots:
     void onHorseSelected();
     void onBetEntered();
     void updateMoneyPool(double newAmount);
-    void displayBettingHistory();
 
 public slots:
-    void checkBetResult(int winningHorseIndex);
+    void checkBetResult(int winningHorseIndex, int odds);
+    void resetWindow();
+    void displayBettingHistory();
+
+signals:
+    void betPlaced();
+
 private:
     QLabel *welcomeLabel;
     QPushButton *continueButton;
@@ -41,7 +46,6 @@ private:
 
     //betting history
     QListWidget *bettingHistoryWidget;
-    
 };
 
 

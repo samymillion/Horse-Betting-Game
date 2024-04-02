@@ -1,0 +1,188 @@
+\doxysection{Game\+Window Class Reference}
+\hypertarget{class_game_window}{}\label{class_game_window}\index{GameWindow@{GameWindow}}
+Inheritance diagram for Game\+Window\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_game_window}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_game_window_a55190fa6c38ae381a22ba675338046d1}{check\+Bet\+Result}} (int winning\+Horse\+Index, int odds)
+\begin{DoxyCompactList}\small\item\em A function checks if the horse that the user bet on won the race. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_window_a976ca6cb4c53e4c8cdb6a167fd20c1cb}{reset\+Window}} ()
+\begin{DoxyCompactList}\small\item\em A function that allows the user to place a new bet for the next race. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_window_ab46b14a33a5ec748d11eca55b3523cf2}{display\+Betting\+History}} ()
+\begin{DoxyCompactList}\small\item\em A function that displays user\textquotesingle{}s betting history. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_game_window_ae4c1e24d6a0f30687dabd23751f13044}\label{class_game_window_ae4c1e24d6a0f30687dabd23751f13044} 
+void {\bfseries bet\+Placed} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_game_window_ac3eeb92ff59cb36fd579f290013db4d5}{Game\+Window}} (QWidget \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Constructor for Gamewindow class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_game_window_ac2c2b99ec461c65e5b6ed15cb6adb6ef}{on\+Continue\+Clicked}} ()
+\begin{DoxyCompactList}\small\item\em A function allows the user to pick the horse that they would like to bet on to win. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_window_a0317284048ddff7ab268b6186b5128c9}{on\+Horse\+Selected}} ()
+\begin{DoxyCompactList}\small\item\em A function that allows the user to input in a text box the amount they would like to bet on a horse. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_window_aef43d1e5a9fd7e33cb1ae9dbda113c0e}{on\+Bet\+Entered}} ()
+\begin{DoxyCompactList}\small\item\em A function that once the user has entered bet sets the bet amount and goes onto the next screen to confirm if it is placed succesfully or if there is an error. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_window_af09276f0bc7881d60b37615b1f5aa589}{update\+Money\+Pool}} (double new\+Amount)
+\begin{DoxyCompactList}\small\item\em A function that updates the money paul based on the new maount. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_game_window_a2a3a689b56bf9052e4efed8d40755e77}\label{class_game_window_a2a3a689b56bf9052e4efed8d40755e77} 
+QLabel \texorpdfstring{$\ast$}{*} {\bfseries welcome\+Label}
+\item 
+\Hypertarget{class_game_window_a479e51e2cba84c30e70cfeb7b7fa0335}\label{class_game_window_a479e51e2cba84c30e70cfeb7b7fa0335} 
+QPush\+Button \texorpdfstring{$\ast$}{*} {\bfseries continue\+Button}
+\item 
+\Hypertarget{class_game_window_a16374dee94a1c45ed8c837a0159e8ac8}\label{class_game_window_a16374dee94a1c45ed8c837a0159e8ac8} 
+QPush\+Button \texorpdfstring{$\ast$}{*} {\bfseries horse\+Buttons} \mbox{[}5\mbox{]}
+\item 
+\Hypertarget{class_game_window_aa2bcb9be21964770407fb12e2f1735fd}\label{class_game_window_aa2bcb9be21964770407fb12e2f1735fd} 
+QString {\bfseries horse\+Selected}
+\item 
+\Hypertarget{class_game_window_a8f887a36f13d6fb6f96c6afcd9e43d6a}\label{class_game_window_a8f887a36f13d6fb6f96c6afcd9e43d6a} 
+QLine\+Edit \texorpdfstring{$\ast$}{*} {\bfseries bet\+Input}
+\item 
+\Hypertarget{class_game_window_a861fd06b87849569c141aa3787fb9417}\label{class_game_window_a861fd06b87849569c141aa3787fb9417} 
+int {\bfseries bet\+Amount}
+\item 
+\Hypertarget{class_game_window_a74bda29030f42cc7d8a2d99e4dc4a821}\label{class_game_window_a74bda29030f42cc7d8a2d99e4dc4a821} 
+int {\bfseries horse\+Index}
+\item 
+\Hypertarget{class_game_window_a6dc30d4bce247547d3f8a40902179ce3}\label{class_game_window_a6dc30d4bce247547d3f8a40902179ce3} 
+\mbox{\hyperlink{class_bet}{Bet}} \texorpdfstring{$\ast$}{*} {\bfseries bet}
+\item 
+\Hypertarget{class_game_window_a97d5fd44f25c2e207669ab277db9f0f7}\label{class_game_window_a97d5fd44f25c2e207669ab277db9f0f7} 
+QLabel \texorpdfstring{$\ast$}{*} {\bfseries money\+Pool\+Label}
+\item 
+\Hypertarget{class_game_window_a3ea3cc18afe69389251c16b38f8a68f0}\label{class_game_window_a3ea3cc18afe69389251c16b38f8a68f0} 
+QList\+Widget \texorpdfstring{$\ast$}{*} {\bfseries betting\+History\+Widget}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_game_window_ac3eeb92ff59cb36fd579f290013db4d5}\label{class_game_window_ac3eeb92ff59cb36fd579f290013db4d5} 
+\index{GameWindow@{GameWindow}!GameWindow@{GameWindow}}
+\index{GameWindow@{GameWindow}!GameWindow@{GameWindow}}
+\doxysubsubsection{\texorpdfstring{GameWindow()}{GameWindow()}}
+{\footnotesize\ttfamily Game\+Window\+::\+Game\+Window (\begin{DoxyParamCaption}\item[{QWidget \texorpdfstring{$\ast$}{*}}]{parent = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+
+Constructor for Gamewindow class. 
+
+This constructor creates a layout of the betting interface that displays the money pool, bet input field, and horses to bet on. It creates an instance of a new \doxylink{class_bet}{Bet} object. 
+\begin{DoxyParams}{Parameters}
+{\em parent} & The parent QWidget. \\
+\hline
+\end{DoxyParams}
+Continue into game
+
+Set up initial money pool
+
+Set icons for horses
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_game_window_a55190fa6c38ae381a22ba675338046d1}\label{class_game_window_a55190fa6c38ae381a22ba675338046d1} 
+\index{GameWindow@{GameWindow}!checkBetResult@{checkBetResult}}
+\index{checkBetResult@{checkBetResult}!GameWindow@{GameWindow}}
+\doxysubsubsection{\texorpdfstring{checkBetResult}{checkBetResult}}
+{\footnotesize\ttfamily void Game\+Window\+::check\+Bet\+Result (\begin{DoxyParamCaption}\item[{int}]{winning\+Horse,  }\item[{int}]{odds }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+
+
+A function checks if the horse that the user bet on won the race. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em winning\+Horse} & id of the horse that wins \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_game_window_ab46b14a33a5ec748d11eca55b3523cf2}\label{class_game_window_ab46b14a33a5ec748d11eca55b3523cf2} 
+\index{GameWindow@{GameWindow}!displayBettingHistory@{displayBettingHistory}}
+\index{displayBettingHistory@{displayBettingHistory}!GameWindow@{GameWindow}}
+\doxysubsubsection{\texorpdfstring{displayBettingHistory}{displayBettingHistory}}
+{\footnotesize\ttfamily void Game\+Window\+::display\+Betting\+History (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+
+
+A function that displays user\textquotesingle{}s betting history. 
+
+This function displays a list of the user\textquotesingle{}s past bets, horses bet on, and payouts. \Hypertarget{class_game_window_aef43d1e5a9fd7e33cb1ae9dbda113c0e}\label{class_game_window_aef43d1e5a9fd7e33cb1ae9dbda113c0e} 
+\index{GameWindow@{GameWindow}!onBetEntered@{onBetEntered}}
+\index{onBetEntered@{onBetEntered}!GameWindow@{GameWindow}}
+\doxysubsubsection{\texorpdfstring{onBetEntered}{onBetEntered}}
+{\footnotesize\ttfamily void Game\+Window\+::on\+Bet\+Entered (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+A function that once the user has entered bet sets the bet amount and goes onto the next screen to confirm if it is placed succesfully or if there is an error. 
+
+After the user enters a bet and presses the enter key, it checks to see if the bet is valid and within the bounds of the money pool. If it is valid, the user may start the race. Otherwise, they are shown a warning message. It prohibits the user from entering a new bet while a race is in progress. Setting bets calls place\+Bet function in \doxylink{bet_8cpp}{bet.\+cpp}, changing bet object values
+
+\doxylink{class_bet}{Bet} successfully placed
+
+\doxylink{class_bet}{Bet} exceeds money pool\Hypertarget{class_game_window_ac2c2b99ec461c65e5b6ed15cb6adb6ef}\label{class_game_window_ac2c2b99ec461c65e5b6ed15cb6adb6ef} 
+\index{GameWindow@{GameWindow}!onContinueClicked@{onContinueClicked}}
+\index{onContinueClicked@{onContinueClicked}!GameWindow@{GameWindow}}
+\doxysubsubsection{\texorpdfstring{onContinueClicked}{onContinueClicked}}
+{\footnotesize\ttfamily void Game\+Window\+::on\+Continue\+Clicked (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+A function allows the user to pick the horse that they would like to bet on to win. 
+
+On the betting interface, when the user first clicks continue, this function displays a list of horses and allows to user to select one to bet on. User to pick a horse\Hypertarget{class_game_window_a0317284048ddff7ab268b6186b5128c9}\label{class_game_window_a0317284048ddff7ab268b6186b5128c9} 
+\index{GameWindow@{GameWindow}!onHorseSelected@{onHorseSelected}}
+\index{onHorseSelected@{onHorseSelected}!GameWindow@{GameWindow}}
+\doxysubsubsection{\texorpdfstring{onHorseSelected}{onHorseSelected}}
+{\footnotesize\ttfamily void Game\+Window\+::on\+Horse\+Selected (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+A function that allows the user to input in a text box the amount they would like to bet on a horse. 
+
+After the user selects a horse, this function displays an input field for the user to enter a bet amount in. Show the bet input field\Hypertarget{class_game_window_a976ca6cb4c53e4c8cdb6a167fd20c1cb}\label{class_game_window_a976ca6cb4c53e4c8cdb6a167fd20c1cb} 
+\index{GameWindow@{GameWindow}!resetWindow@{resetWindow}}
+\index{resetWindow@{resetWindow}!GameWindow@{GameWindow}}
+\doxysubsubsection{\texorpdfstring{resetWindow}{resetWindow}}
+{\footnotesize\ttfamily void Game\+Window\+::reset\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+
+
+A function that allows the user to place a new bet for the next race. 
+
+This function reset the welcome label to prompt user to pick a horse, and shows the bet input field only if it is a new race. \Hypertarget{class_game_window_af09276f0bc7881d60b37615b1f5aa589}\label{class_game_window_af09276f0bc7881d60b37615b1f5aa589} 
+\index{GameWindow@{GameWindow}!updateMoneyPool@{updateMoneyPool}}
+\index{updateMoneyPool@{updateMoneyPool}!GameWindow@{GameWindow}}
+\doxysubsubsection{\texorpdfstring{updateMoneyPool}{updateMoneyPool}}
+{\footnotesize\ttfamily void Game\+Window\+::update\+Money\+Pool (\begin{DoxyParamCaption}\item[{double}]{new\+Amount }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+A function that updates the money paul based on the new maount. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Amount} & the new amount for money pool \\
+\hline
+\end{DoxyParams}
+Updates money pool with new amount
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+gamewindow.\+h\item 
+\mbox{\hyperlink{gamewindow_8cpp}{gamewindow.\+cpp}}\item 
+moc\+\_\+gamewindow.\+cpp\end{DoxyCompactItemize}

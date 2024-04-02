@@ -1,0 +1,264 @@
+\doxysection{Bet Class Reference}
+\hypertarget{class_bet}{}\label{class_bet}\index{Bet@{Bet}}
+
+
+The \doxylink{class_bet}{Bet} class manages bets in the game.  
+
+
+
+
+{\ttfamily \#include $<$bet.\+h$>$}
+
+Inheritance diagram for Bet\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_bet}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_bet_1_1_bet_info}{Bet\+Info}}
+\begin{DoxyCompactList}\small\item\em Structure to store information about a bet. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_bet_a739fefd2525df68e960f2a23e5fabbf5}{money\+Pool\+Changed}} (double new\+Amount)
+\begin{DoxyCompactList}\small\item\em when the money pool changes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_bet_a88448e2923819acb9763f6ffe245fa29}{Bet}} (double initial\+Money\+Pool, QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Initializes a \doxylink{class_bet}{Bet} object with a specified initial money pool. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_bet_a94b54d5bccb99c784c0d78ddf9d1e593}{set\+Bet\+Amount}} (double amount)
+\begin{DoxyCompactList}\small\item\em Sets the attribute m\+\_\+bet\+Amount to the specified amount. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_bet_ae4d47efa8351a5ae8806e2c9a24a47b9}{set\+Money\+Pool}} (double amount)
+\begin{DoxyCompactList}\small\item\em Sets the attribute m\+\_\+money\+Pool to the specified amount. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_bet_a21891fdbb0ced74985b324fe58a0c731}{get\+Bet\+Amount}} () const
+\begin{DoxyCompactList}\small\item\em Returns the attribute m\+\_\+bet\+Amount. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_bet_a6ce52d47a0103722b2ba8e9085a4c69b}{get\+Money\+Pool}} () const
+\begin{DoxyCompactList}\small\item\em Returns the attribute m\+\_\+money\+Pool. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_bet_af94631c9c55057308d1421f3ea19ac40}{place\+Bet}} ()
+\begin{DoxyCompactList}\small\item\em Deducts the bet amount from the money pool if the bet is valid. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_bet_a5fafd4340fcf65e18e675d4763a44b9b}{calculate\+Payout}} (int amount, int odds, int horse\+Index, bool is\+Win)
+\begin{DoxyCompactList}\small\item\em Calculates the payout for the bet. \end{DoxyCompactList}\item 
+const std\+::vector$<$ \mbox{\hyperlink{struct_bet_1_1_bet_info}{Bet\+Info}} $>$ \& \mbox{\hyperlink{class_bet_a32bea19c7ea425e97548ac5b8d0b6015}{get\+Betting\+History}} () const
+\begin{DoxyCompactList}\small\item\em Returns the betting history. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_bet_a68e39ba9a417ccd06f215b9bcbc6032f}\label{class_bet_a68e39ba9a417ccd06f215b9bcbc6032f} 
+double {\bfseries m\+\_\+bet\+Amount}
+\begin{DoxyCompactList}\small\item\em private variable that stores current bet amount \end{DoxyCompactList}\item 
+\Hypertarget{class_bet_a9b65be6e9a5424be0d1bb0f4cd052416}\label{class_bet_a9b65be6e9a5424be0d1bb0f4cd052416} 
+double {\bfseries m\+\_\+money\+Pool}
+\begin{DoxyCompactList}\small\item\em private variable that stores the current money pool \end{DoxyCompactList}\item 
+\Hypertarget{class_bet_aeb4f9fba4857407298fd4e6fafe80f79}\label{class_bet_aeb4f9fba4857407298fd4e6fafe80f79} 
+std\+::vector$<$ \mbox{\hyperlink{struct_bet_1_1_bet_info}{Bet\+Info}} $>$ {\bfseries m\+\_\+betting\+History}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \doxylink{class_bet}{Bet} class manages bets in the game. 
+
+This class handles the bet amount, the money pool, and calculates the payout for the bets. It also maintains a history of all bets made. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_bet_a88448e2923819acb9763f6ffe245fa29}\label{class_bet_a88448e2923819acb9763f6ffe245fa29} 
+\index{Bet@{Bet}!Bet@{Bet}}
+\index{Bet@{Bet}!Bet@{Bet}}
+\doxysubsubsection{\texorpdfstring{Bet()}{Bet()}}
+{\footnotesize\ttfamily Bet\+::\+Bet (\begin{DoxyParamCaption}\item[{double}]{initial\+Money\+Pool,  }\item[{QObject \texorpdfstring{$\ast$}{*}}]{parent = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Initializes a \doxylink{class_bet}{Bet} object with a specified initial money pool. 
+
+Constructor for the \doxylink{class_bet}{Bet} class.
+
+
+\begin{DoxyParams}{Parameters}
+{\em initial\+Money\+Pool} & The initial amount of money in the pool. \\
+\hline
+{\em parent} & The parent QObject Constructor for the \doxylink{class_bet}{Bet} class\\
+\hline
+\end{DoxyParams}
+THis consturctor initalized a \doxylink{class_bet}{Bet} object with a initial money pool. 
+\begin{DoxyParams}{Parameters}
+{\em initial\+Money\+Pool} & A double representing the initial amount of money in the pool. \\
+\hline
+{\em parent} & The parent QObject (optional). \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_bet_a5fafd4340fcf65e18e675d4763a44b9b}\label{class_bet_a5fafd4340fcf65e18e675d4763a44b9b} 
+\index{Bet@{Bet}!calculatePayout@{calculatePayout}}
+\index{calculatePayout@{calculatePayout}!Bet@{Bet}}
+\doxysubsubsection{\texorpdfstring{calculatePayout()}{calculatePayout()}}
+{\footnotesize\ttfamily double Bet\+::calculate\+Payout (\begin{DoxyParamCaption}\item[{int}]{amount,  }\item[{int}]{odds,  }\item[{int}]{horse\+Index,  }\item[{bool}]{is\+Win }\end{DoxyParamCaption})}
+
+
+
+Calculates the payout for the bet. 
+
+Calculates the payout based on the bet amount, odds, horse index, and win status.
+
+A function that takes the bet amount set by the user and returns two times the initial bet to represent the payout (payout is 200\% of bet amount). 
+\begin{DoxyParams}{Parameters}
+{\em amount} & the bet amount that the user set this round. \\
+\hline
+{\em odds} & The odds for the bet. \\
+\hline
+{\em horse\+Index} & The index of the horse the bet is placed on. \\
+\hline
+{\em is\+Win} & A boolean indicating whether the bet was a winning bet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double the initial bet amount, which represents the payout.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em amount} & The bet amount. \\
+\hline
+{\em odds} & The odds for the bet. \\
+\hline
+{\em horse\+Index} & The index of the horse \\
+\hline
+{\em is\+Win} & A boolean indicating whether the bet was a winning bet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The calculated payout based on the bet amount and odds. 
+\end{DoxyReturn}
+\Hypertarget{class_bet_a21891fdbb0ced74985b324fe58a0c731}\label{class_bet_a21891fdbb0ced74985b324fe58a0c731} 
+\index{Bet@{Bet}!getBetAmount@{getBetAmount}}
+\index{getBetAmount@{getBetAmount}!Bet@{Bet}}
+\doxysubsubsection{\texorpdfstring{getBetAmount()}{getBetAmount()}}
+{\footnotesize\ttfamily double Bet\+::get\+Bet\+Amount (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Returns the attribute m\+\_\+bet\+Amount. 
+
+A getter function for bet amount that returns the attribute m\+\_\+bet\+Amount.
+
+A getter function for bet amount that returns the attribute m\+\_\+bet\+Amount. \begin{DoxyReturn}{Returns}
+the amount bet by the user.
+
+the amount bet by the user. 
+\end{DoxyReturn}
+\Hypertarget{class_bet_a32bea19c7ea425e97548ac5b8d0b6015}\label{class_bet_a32bea19c7ea425e97548ac5b8d0b6015} 
+\index{Bet@{Bet}!getBettingHistory@{getBettingHistory}}
+\index{getBettingHistory@{getBettingHistory}!Bet@{Bet}}
+\doxysubsubsection{\texorpdfstring{getBettingHistory()}{getBettingHistory()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{struct_bet_1_1_bet_info}{Bet\+::\+Bet\+Info}} $>$ \& Bet\+::get\+Betting\+History (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Returns the betting history. 
+
+Gets the betting history (all previous bets)
+
+Gets the betting history. \begin{DoxyReturn}{Returns}
+A const reference to a vector of \doxylink{struct_bet_1_1_bet_info}{Bet\+Info} objects representing the betting history.
+
+A const reference to a vector of objects representing the betting history 
+\end{DoxyReturn}
+\Hypertarget{class_bet_a6ce52d47a0103722b2ba8e9085a4c69b}\label{class_bet_a6ce52d47a0103722b2ba8e9085a4c69b} 
+\index{Bet@{Bet}!getMoneyPool@{getMoneyPool}}
+\index{getMoneyPool@{getMoneyPool}!Bet@{Bet}}
+\doxysubsubsection{\texorpdfstring{getMoneyPool()}{getMoneyPool()}}
+{\footnotesize\ttfamily double Bet\+::get\+Money\+Pool (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Returns the attribute m\+\_\+money\+Pool. 
+
+A getter function for bet amount that returns the attribute m\+\_\+money\+Pool.
+
+A getter function for bet amount that returns the attribute m\+\_\+money\+Pool. \begin{DoxyReturn}{Returns}
+the user\textquotesingle{}s current money pool.
+
+the user\textquotesingle{}s current money pool. 
+\end{DoxyReturn}
+\Hypertarget{class_bet_a739fefd2525df68e960f2a23e5fabbf5}\label{class_bet_a739fefd2525df68e960f2a23e5fabbf5} 
+\index{Bet@{Bet}!moneyPoolChanged@{moneyPoolChanged}}
+\index{moneyPoolChanged@{moneyPoolChanged}!Bet@{Bet}}
+\doxysubsubsection{\texorpdfstring{moneyPoolChanged}{moneyPoolChanged}}
+{\footnotesize\ttfamily void Bet\+::money\+Pool\+Changed (\begin{DoxyParamCaption}\item[{double}]{new\+Amount }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+when the money pool changes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Amount} & The new amount of the money pool. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_bet_af94631c9c55057308d1421f3ea19ac40}\label{class_bet_af94631c9c55057308d1421f3ea19ac40} 
+\index{Bet@{Bet}!placeBet@{placeBet}}
+\index{placeBet@{placeBet}!Bet@{Bet}}
+\doxysubsubsection{\texorpdfstring{placeBet()}{placeBet()}}
+{\footnotesize\ttfamily bool Bet\+::place\+Bet (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Deducts the bet amount from the money pool if the bet is valid. 
+
+Attempts to place a bet with the current bet amount.
+
+A function that returns true and deducts the user\textquotesingle{}s bet amount from money pool. If the bet is greater than the money pool, return false. \begin{DoxyReturn}{Returns}
+true if the bet is within the limits of the money pool, false otherwise.
+\end{DoxyReturn}
+Deducts the bet amount from the money pool if the bet is within the pool\textquotesingle{}s limits \begin{DoxyReturn}{Returns}
+true if the bet is within the limits of the money pool, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_bet_a94b54d5bccb99c784c0d78ddf9d1e593}\label{class_bet_a94b54d5bccb99c784c0d78ddf9d1e593} 
+\index{Bet@{Bet}!setBetAmount@{setBetAmount}}
+\index{setBetAmount@{setBetAmount}!Bet@{Bet}}
+\doxysubsubsection{\texorpdfstring{setBetAmount()}{setBetAmount()}}
+{\footnotesize\ttfamily void Bet\+::set\+Bet\+Amount (\begin{DoxyParamCaption}\item[{double}]{amount }\end{DoxyParamCaption})}
+
+
+
+Sets the attribute m\+\_\+bet\+Amount to the specified amount. 
+
+A setter function for bet amount that takes 1 argument and sets the attribute m\+\_\+bet\+Amount.
+
+A setter function for bet amount that takes 1 argument and sets the attribute m\+\_\+bet\+Amount. 
+\begin{DoxyParams}{Parameters}
+{\em amount} & an double argument that represents the amount bet by the user.\\
+\hline
+{\em amount} & an double argument that represents the amount bet by the user. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_bet_ae4d47efa8351a5ae8806e2c9a24a47b9}\label{class_bet_ae4d47efa8351a5ae8806e2c9a24a47b9} 
+\index{Bet@{Bet}!setMoneyPool@{setMoneyPool}}
+\index{setMoneyPool@{setMoneyPool}!Bet@{Bet}}
+\doxysubsubsection{\texorpdfstring{setMoneyPool()}{setMoneyPool()}}
+{\footnotesize\ttfamily void Bet\+::set\+Money\+Pool (\begin{DoxyParamCaption}\item[{double}]{amount }\end{DoxyParamCaption})}
+
+
+
+Sets the attribute m\+\_\+money\+Pool to the specified amount. 
+
+A setter function for money pool that takes 1 argument and sets the attribute m\+\_\+money\+Pool.
+
+A setter function for money pool that takes 1 argument and sets the attribute m\+\_\+money\+Pool. 
+\begin{DoxyParams}{Parameters}
+{\em amount} & an double argument that represents the current money pool of the user.\\
+\hline
+{\em amount} & an double argument that represents the current money pool of the user. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{bet_8h}{bet.\+h}}\item 
+\mbox{\hyperlink{bet_8cpp}{bet.\+cpp}}\item 
+moc\+\_\+bet.\+cpp\end{DoxyCompactItemize}

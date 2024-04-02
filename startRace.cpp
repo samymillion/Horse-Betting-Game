@@ -1,4 +1,15 @@
+/*!
+ * \file startRace.cpp
+ * \author Kevin, Zeba, Sam, Anna, Rohith
+ * \date 2024-04-01
+ * \brief Implementation file for the startRace class.
+ *
+ *   This class manages the bet in a betting game, this icnludes the bet amount, the money pool,  payouts, 
+ *   and it also has an array that maintains the bet history
+ */
+
 #include <QApplication>
+#include <cmath>
 #include <QWidget>
 #include <QPalette>
 #include <QColor>
@@ -14,18 +25,28 @@
 #include <ctime>
 #include <iostream>
 #include <QPalette>
+#include <iostream>
+using namespace std;
 
 #include "startRace.h"
-#include "GameWindow.h"
 
-//! startRace runs the race logic and components related to the race
-startRace::startRace(QWidget *parent) : QWidget(parent), horsesFinished(0) {
+//! \brief Initializes the race window and sets up the UI components.
+/*!
+  \param parent The parent widget, defaults to nullptr.
+  Constructor for the startRace class.
+ */startRace::startRace(QWidget *parent) : QWidget(parent), horsesFinished(0) {
     srand(static_cast<unsigned>(time(NULL))); //seed
     this->setupUI();
 }
 
-//! A function to setup aspects of the race within the gamewindow 
+//!   \brief Constructs the main layout, creates the buttons, and the race track
+/*!
+    Sets up the UI elements of the race within the game window.
+ */
 void startRace::setupUI() {
+
+        GameWindow* gameWindow = new GameWindow();
+
         std::cout << "Test passed (GUI is displayed successfully)\n";
         setWindowTitle("PIXEL DERBY 2024");
         setStyleSheet("background-color: #171a17;");
@@ -38,25 +59,36 @@ void startRace::setupUI() {
         QGridLayout* gridLayout = new QGridLayout;
         QPushButton* button;
 
+        createHorses();
+        
         //! Player stats button
-        button = new QPushButton("PLAYER STATS");
+        button = new QPushButton("BETTING HISTORY");
         button->setFixedSize(470, 50);
         button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; color: white; border: 1px solid black;");
         gridLayout->addWidget(button, 0, 0);
+        connect(button, &QPushButton::clicked, gameWindow, &GameWindow::displayBettingHistory);
 
         //! Horse roster button
         button = new QPushButton("HORSE ROSTER");
         button->setFixedSize(470, 50);
         button->setStyleSheet("font-family: Trebuchet MS; background-color: #292b29; background-position: center; font-size: 25px; color: white; border: 1px solid black;");
-        gridLayout->addWidget(button, 0, 1);
+        gridLayout->addWidget(button, 0, 2);
         connect(button, &QPushButton::clicked, this, &startRace::showHorseRoster);
 
 
         //! Betting interface
         //! Assuming GameWindow is properly defined elsewhere and handles betting logic
-        GameWindow* gameWindow = new GameWindow();
+        
         connect(this, &startRace::raceFinished, gameWindow, &GameWindow::checkBetResult);
-        gridLayout->addWidget(gameWindow, 0, 2);
+        connect(this, &startRace::resetBet, gameWindow, &GameWindow::resetWindow);
+        
+        connect(gameWindow, &GameWindow::betPlaced, this, [this]() {
+            betPlaced = true;
+        });
+
+        gridLayout->addWidget(gameWindow, 0, 1);
+        gridLayout->setAlignment(gameWindow, Qt::AlignTop | Qt::AlignHCenter);
+        gridLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
         createRaceTrack(mainLayout);
         mainLayout->addLayout(gridLayout);
@@ -69,7 +101,12 @@ void startRace::setupUI() {
         connect(timer, &QTimer::timeout, this, &startRace::advanceHorses);
     }
 
-//! A function to assign and display horse statistics to help user select and bet
+
+//! \brief Creates a dialog displaying the odds and speed of each horse.
+/*!
+    Displays horse statistics to help the user select and bet
+
+*/
 void startRace::showHorseRoster() {
     QDialog *horseRosterDialog = new QDialog(this);
     horseRosterDialog->setWindowTitle("Horse Roster");
@@ -77,27 +114,28 @@ void startRace::showHorseRoster() {
     int numHorses = 5;
 
     for (int i = 0; i < numHorses; ++i) {
-        QLabel *horseLabel = new QLabel("Horse " + QString::number(i+1) + " Statistics:");
-        int speed = rand() % 31 + 50; // Horses can go up to 80 mph
-        int strength = rand() % 101; // Generic ranking of strength to 100
-        QLabel *horseSpeedLabel = new QLabel("Speed: " + QString::number(speed) + " mph");
-        QLabel *horseStrengthLabel = new QLabel("Strength: " + QString::number(strength));
-        int health = (speed + strength)/2;
+        QLabel *horseLabel = new QLabel(QString::fromStdString(horseList.at(i).getName()));
+        int speed = horseList.at(i).getSpeedFactor();
+        int odds = horseList.at(i).getMoneyLine();
+        //int strength = rand() % 101; // Generic ranking of strength to 100
+        //QLabel *horseSpeedLabel = new QLabel("Speed: " + QString::number(speed) + " mph");
+        QLabel *horseOddsLabel = new QLabel("Odds: " + QString::number(odds));
+    /*    int health = (speed + strength)/2;
         QLabel *horseHealthLabel = new QLabel("Overall Health: " + QString::number(health));
-
+    */
         QPalette palette;
-        if (health <= 50) {
+        if (speed <= 5) {
             palette.setColor(QPalette::WindowText, Qt::red); // Set text color to red if health < 25
-        } else if (health >= 70) {
+        } else if (speed >= 7) {
             palette.setColor(QPalette::WindowText, Qt::green); // Set text color to green if health >= 75
         } else {
             palette.setColor(QPalette::WindowText, Qt::white); // Set text color to white for other cases
         }
 
         horseLabel->setPalette(palette);
-        horseSpeedLabel->setPalette(palette);
-        horseStrengthLabel->setPalette(palette);
-        horseHealthLabel->setPalette(palette);
+    //    horseSpeedLabel->setPalette(palette);
+        horseOddsLabel->setPalette(palette);
+    //   horseHealthLabel->setPalette(palette);
 
         
         QFont font = horseLabel->font();
@@ -106,35 +144,47 @@ void startRace::showHorseRoster() {
               
 
         layout->addWidget(horseLabel);
-        layout->addWidget(horseSpeedLabel);
-        layout->addWidget(horseStrengthLabel);
-        layout->addWidget(horseHealthLabel);
+    //    layout->addWidget(horseSpeedLabel);
+        layout->addWidget(horseOddsLabel);
+    //    layout->addWidget(horseHealthLabel);
     }
 
     horseRosterDialog->exec();
 }
 
-//! A function that creates the top panel of buttons including money, start race, and game title bar
+//! \brief Constructs a QHBoxLayout containing the button widgets.
 /*!
-*   \return QHBoxLayout object layout which contains the widgets
-*/
+    Creates the  panel of buttons for different functionalities
+
+    \return A pointer to a QHBoxLayout object containing the button widgets.
+ */
 QHBoxLayout* startRace::createButtonBar() {
         QHBoxLayout* layout = new QHBoxLayout;
         QPushButton* button;
 
         //! Bet Display Button
-        button = createButton("$42000", 200, 50, "font-family: Trebuchet MS Bold; background-color: #0f111a; background-position: center; font-size: 30px; color: white; border: 3px solid #282e42; border-radius: 5px;");
+        button = createButton("GROUP#30", 300, 50, "font-family: Verdana; background-color: #6e0885; background-position: center; font-size: 25px; color: white; border: 3px solid #282e42; border-radius: 5px;");
         layout->addWidget(button);
 
         //! Start Race Button
         startRaceButton = createButton("S T A R T   R A C E", 600, 50, "font: bold; background-image: url(:/icons/gradient.png); background-position: center; font-size: 30px; color: white; border: 3px solid white; border-radius: 15px;");
         layout->addWidget(startRaceButton);
-        connect(startRaceButton, &QPushButton::clicked, this, [=]() {
-            std::cout << "Test passed (Start Button Initiates the Race)\n";
-            timer->start(500);
-            startRaceButton->setEnabled(false);
+        connect(startRaceButton, &QPushButton::clicked, this, [this]() {
+            if (!betPlaced) {
+                QMessageBox messageBox;
+                messageBox.setWindowTitle("Action Required");
+                messageBox.setText("Place a bet first!");
+                messageBox.setStyleSheet("QMessageBox { background-color: white; }");
+                messageBox.setIcon(QMessageBox::Warning);
+                messageBox.setStandardButtons(QMessageBox::Ok);
+                messageBox.exec();
+            } else {
+                std::cout << "Test passed (Start Button Initiates the Race)\n";
+                timer->start(500);
+                startRaceButton->setEnabled(false);
+                betPlaced = false; // Reset this flag to ensure a bet is placed for each new race
+            }
         });
-
         //! Version Display Button
         button = createButton("PIXELDERBY v1.0", 300, 50, "font-family: Verdana; background-image: url(:/icons/gold.png); background-position: center; font-size: 25px; color: black; border: 1px solid black; border-radius: 5px;");
         layout->addWidget(button);
@@ -157,8 +207,9 @@ QPushButton* startRace::createButton(const QString& text, int width, int height,
         return button;
     }
 
-//! A function that creates the race track for the horse game
+//! \brief Constructs the race track layout and adds it to the main layout
 /*!
+    A function that creates the race track for the horse game
     \param mainLayout a Qt layout to build the race track layout upon and appear flexibly in game window
 */
 void startRace::createRaceTrack(QVBoxLayout* mainLayout) {
@@ -184,8 +235,9 @@ void startRace::createRaceTrack(QVBoxLayout* mainLayout) {
         mainLayout->addLayout(raceTrackLayout);
     }
 
-//! A function that creates button marking the starting line for the horse race game
+//!  \brief Sets up a QPushButton to mark the starting line of the race track.
 /*!
+    A function that creates button marking the starting line for the horse race game
     \param button Qt button to utilize as starting line
     \param row what row to place within
 */
@@ -196,17 +248,27 @@ void startRace::setupStartingLineButton(QPushButton* button, int row) {
         button->setStyleSheet("background-color: red;");
     }
 
-//! A function that moves horse along the track randomly
+//! \brief Moves each horse forward based on a random chance adjusted by the horse's speed factor.
+/*!
+    Advances the horses along the track randomly based on their speed.
+ */
 void startRace::advanceHorses() {
         for (int row = 0; row < numRows; ++row) {
-            // Randomly decide if the horse moves this tick
-            if (rand() % 2 == 0) { // 50% chance to move
+        double baseChance = 0.5; // Base chance for the horse to move (50%)
+        int speed = horseList.at(row).getSpeedFactor(); // Get the speed factor of the current horse
+        double adjustedChance = baseChance + (speed - 5) * 0.02; // Adjusted chance based on speed factor
+
+        double randomValue = static_cast<double>(rand()) / RAND_MAX;
+
+        std::cout << "Horse " << row << " speed: " << speed << ", adjustedChance: " << adjustedChance << std::endl; //debugging
+
+            if (randomValue < adjustedChance) { // If the random number generated is less than the probability
                 for (int col = numCols - 1; col > 0; --col) {
                     if (!trackButtons[row][col - 1]->icon().isNull()) {
                         // Advance horse
-                        trackButtons[row][col]->setIcon(trackButtons[row][col-1]->icon());
+                        trackButtons[row][col]->setIcon(trackButtons[row][col - 1]->icon());
                         trackButtons[row][col]->setIconSize(QSize(50, 50));
-                        trackButtons[row][col-1]->setIcon(QIcon());
+                        trackButtons[row][col - 1]->setIcon(QIcon());
                         break; // Stop moving this row's horse after it has advanced
                     }
                 }
@@ -223,27 +285,29 @@ void startRace::advanceHorses() {
                     std::cout << "Test passed (Race Ends after ALL horses reach the finish line)\n";
                     timer->stop(); // Stop the race
                     QMessageBox messageBox;
-                    messageBox.setText(QString("Horse %1 wins! \n"
-                                               "Horse %2 was the runner up. \n"
-                                               "Horse %3 finished in third place. \n"
-                                               "Horse %4 finished in fourth place. \n"
-                                               "Horse %5 had a bad day!")
-                                           .arg(results[0]+1)
-                                           .arg(results[1]+1)
-                                           .arg(results[2]+1)
-                                           .arg(results[3]+1)
-                                           .arg(results[4]+1));
+                    messageBox.setText(QString("%1 wins! \n"
+                                               "%2 was the runner up. \n"
+                                               "%3 finished in third place. \n"
+                                               "%4 finished in fourth place. \n"
+                                               "%5 had a bad day!")
+                                           .arg(QString::fromStdString(horseList.at(results[0]).getName()))
+                                           .arg(QString::fromStdString(horseList.at(results[1]).getName()))
+                                           .arg(QString::fromStdString(horseList.at(results[2]).getName()))
+                                           .arg(QString::fromStdString(horseList.at(results[3]).getName()))
+                                           .arg(QString::fromStdString(horseList.at(results[4]).getName())));
                     messageBox.exec();
                     std::cout << "Test passed (Race results are displayed on a pop up window successfully)\n";
-                    emit raceFinished(results[0]);
+                    emit raceFinished(results[0], horseList.at(results[0]).getMoneyLine());
+                    promptRaceRestart();
                     break;
                 }
             }
         }
-    }
+}
 
-//! A function that places a horse in the result order that they arrived in the race
+//! \brief Places a horse in the result order based on its arrival at the finish line.
 /*!
+    A function that places a horse in the result order that they arrived in the race
     \return boolean to place horse's in the order that they arrive
     \param button Qt button to utilize as starting line
 */
@@ -264,7 +328,123 @@ bool startRace::placeHorse(int horseRow) {
         return false;
     }
 
+//!  \brief Generates the horse objects for the race and assigns their money lines
+/*!
+  Creates the horses for the race and calculates their money line
+  \return A vector of Horse objects.
+ */
+std::vector<Horse> startRace::createHorses(){
+    Horse horseOne("Cocoa Comet");
+    Horse horseTwo("Ocean Breeze");
+    Horse horseThree("Jade Jumper");
+    Horse horseFour("Ruby Rocket");
+    Horse horseFive("Lemon Lucky");
+    horseList.push_back(horseOne);
+    horseList.push_back(horseTwo);
+    horseList.push_back(horseThree);
+    horseList.push_back(horseFour);
+    horseList.push_back(horseFive);
 
+    for (Horse horse : horseList) { //debugging
+        std::cout << "Name: " << horse.getName() << ", Speed: " << horse.getSpeedFactor() << std::endl;
+    }
+
+    calculateMoneyLine();
+
+    return horseList;
+}
+
+//! \brief Determines the betting odds for each horse based on their relative speeds.
+/*!
+    Calculates the money line for each horse based on their speed.
+ */
+void startRace::calculateMoneyLine() {
+    double totalSpeed = 0;
+    std::vector<double> winningProbabilities(horseList.size(), 0.0);
+
+    //Calculate total speed
+    for (const Horse& horse : horseList) {
+        totalSpeed += horse.getSpeedFactor();
+    }
+
+    //Calculate raw probabilities based on relative speed
+    for (size_t i = 0; i < horseList.size(); ++i) {
+        winningProbabilities[i] = horseList[i].getSpeedFactor() / totalSpeed;
+    }
+
+    //Calculate average winning probability
+    double averageWinningProbability = 0.0;
+    for (double prob : winningProbabilities) {
+        averageWinningProbability += prob;
+    }
+    averageWinningProbability /= horseList.size();
+
+    //Calculate Moneyline based on comparison with averageWinningProbability
+    for (size_t i = 0; i < horseList.size(); ++i) {
+        double winningProbability = winningProbabilities[i];
+
+        int moneyLine;
+        if (winningProbability > averageWinningProbability) {
+            moneyLine = -round(((winningProbability / (1 - winningProbability)) * 100)) - 100;
+        } else {
+            moneyLine = round((1 - winningProbability) / winningProbability * 100);
+        }
+
+        horseList[i].setMoneyLine(moneyLine);
+        std::cout << "Horse " << horseList[i].getName() << " winningProbability: " << winningProbability << ", odds: " << horseList[i].getMoneyLine() << std::endl; // Debugging
+    }
+}
+
+//!  \brief Displays a message box asking the user to either restart the race or quit the game.
+/*!
+     Prompts the user to restart the race or quit the game after a race finishes.
+ */
+void startRace::promptRaceRestart() {
+    QMessageBox messageBox;
+    messageBox.setWindowTitle("Race Finished");
+    messageBox.setText("Would you like to race again or quit?");
+    messageBox.setStandardButtons(QMessageBox::Retry | QMessageBox::Close);
+    messageBox.setDefaultButton(QMessageBox::Retry);
+    int choice = messageBox.exec();
+
+    switch(choice) {
+    case QMessageBox::Retry:
+        resetRace();
+        break;
+    case QMessageBox::Close:
+    default:
+        QApplication::quit();
+        break;
+    }
+}
+
+//!  \brief Clears the race track and reinitializes the horses for a new race.
+/*!
+     Resets the race to its initial state, allowing for a new race to start.
+ */
+void startRace::resetRace() {
+    // Reset the track for all horses
+    for(int row = 0; row < numRows; ++row) {
+        for(QPushButton* button : trackButtons[row]) {
+            button->setIcon(QIcon()); // Clear the icon to reset the track
+        }
+        // Place the horses back at the starting line
+        if(!trackButtons[row].isEmpty()) {
+            setupStartingLineButton(trackButtons[row][0], row);
+        }
+    }
+
+    horseList.clear();
+    createHorses();
+    emit resetBet();
+
+    horsesFinished = 0; // Reset the counter
+    startRaceButton->setEnabled(true); // Re-enable the start race button
+}
+
+/*!
+ * \brief Main entry point of the application.
+ */
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     startRace window;

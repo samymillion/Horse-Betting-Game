@@ -1,0 +1,57 @@
+\doxysection{gamewindow.\+h}
+\hypertarget{gamewindow_8h_source}{}\label{gamewindow_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ GAMEWINDOW\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ GAMEWINDOW\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <QWidget>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <QPushButton>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <QLabel>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <QMap>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <QPair>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <QGridLayout>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <QLineEdit>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <QListWidget>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{bet_8h}{bet.h}}"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_game_window}{GameWindow}}\ :\ \textcolor{keyword}{public}\ QWidget\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{class_game_window_ac3eeb92ff59cb36fd579f290013db4d5}{GameWindow}}(QWidget\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{private}\ slots:}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_window_ac2c2b99ec461c65e5b6ed15cb6adb6ef}{onContinueClicked}}();}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_window_a0317284048ddff7ab268b6186b5128c9}{onHorseSelected}}();}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_window_aef43d1e5a9fd7e33cb1ae9dbda113c0e}{onBetEntered}}();}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_window_af09276f0bc7881d60b37615b1f5aa589}{updateMoneyPool}}(\textcolor{keywordtype}{double}\ newAmount);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}\ slots:}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_window_a55190fa6c38ae381a22ba675338046d1}{checkBetResult}}(\textcolor{keywordtype}{int}\ winningHorseIndex,\ \textcolor{keywordtype}{int}\ odds);}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_window_a976ca6cb4c53e4c8cdb6a167fd20c1cb}{resetWindow}}();}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_window_ab46b14a33a5ec748d11eca55b3523cf2}{displayBettingHistory}}();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ signals:}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ betPlaced();}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00035\ \ \ \ \ QLabel\ *welcomeLabel;}
+\DoxyCodeLine{00036\ \ \ \ \ QPushButton\ *continueButton;}
+\DoxyCodeLine{00037\ \ \ \ \ QPushButton\ *horseButtons[5];}
+\DoxyCodeLine{00038\ \ \ \ \ QString\ horseSelected;\ \textcolor{comment}{//\ Variable\ to\ store\ the\ selected\ horse}}
+\DoxyCodeLine{00039\ \ \ \ \ QLineEdit\ *betInput;\ \textcolor{comment}{//\ Variable\ to\ store\ the\ bet\ input\ field}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{int}\ betAmount;\ \textcolor{comment}{//\ Variable\ to\ store\ the\ bet\ amount}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{int}\ horseIndex;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{//bet\ object}}
+\DoxyCodeLine{00044\ \ \ \ \ \mbox{\hyperlink{class_bet}{Bet}}\ *bet;}
+\DoxyCodeLine{00045\ \ \ \ \ QLabel\ *moneyPoolLabel;}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{comment}{//betting\ history}}
+\DoxyCodeLine{00048\ \ \ \ \ QListWidget\ *bettingHistoryWidget;}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ GAMEWINDOW\_H}}
+
+\end{DoxyCode}

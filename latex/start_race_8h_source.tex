@@ -1,0 +1,59 @@
+\doxysection{start\+Race.\+h}
+\hypertarget{start_race_8h_source}{}\label{start_race_8h_source}\mbox{\hyperlink{start_race_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ STARTRACE\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ STARTRACE\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <QWidget>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <QPushButton>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <QVector>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <QGridLayout>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <QHBoxLayout>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <QVBoxLayout>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <QTimer>}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}horse.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}gamewindow.h"{}}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classstart_race}{startRace}}\ :\ \textcolor{keyword}{public}\ QWidget\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{classstart_race_abcbbe6bbfcdcccbcf6a22b2652f10f30}{startRace}}(QWidget\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ signals:}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ raceFinished(\textcolor{keywordtype}{int}\ winningHorseIndex,\ \textcolor{keywordtype}{int}\ odds);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ resetBet();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{private}\ slots:}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstart_race_aa55c7f1bd5c02b8351fdf06cf10bcd52}{advanceHorses}}();}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00039\ \ \ \ \ QGridLayout\ *raceTrackLayout;}
+\DoxyCodeLine{00040\ \ \ \ \ QPushButton\ *startRaceButton;}
+\DoxyCodeLine{00041\ \ \ \ \ QVector<QVector<QPushButton*>>\ trackButtons;}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ numRows\ =\ 5;}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ numCols\ =\ 25;}
+\DoxyCodeLine{00044\ \ \ \ \ QTimer\ *timer;}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{int}\ horsesFinished\ =\ 0;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{int}\ results[5];}
+\DoxyCodeLine{00047\ \ \ \ \ std::vector<Horse>\ horseList;}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{bool}\ betPlaced\ =\ 0;}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstart_race_a685b1476bb443ac44a960270a419902a}{setupUI}}();}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstart_race_aa31fdb39da2473258e357d1e34b47dcb}{showHorseRoster}}();}
+\DoxyCodeLine{00052\ \ \ \ \ QHBoxLayout*\ \mbox{\hyperlink{classstart_race_a6512f3feafab4c96292fcf1015f13b36}{createButtonBar}}();}
+\DoxyCodeLine{00053\ \ \ \ \ QPushButton*\ \mbox{\hyperlink{classstart_race_ae90224b340f84214216cb0d67122d822}{createButton}}(\textcolor{keyword}{const}\ QString\ \&text,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ QString\ \&style);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstart_race_a4a47de2071bc3cdb886d63727412a2d5}{createRaceTrack}}(QVBoxLayout\ *mainLayout);}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstart_race_a2ce25a24087b6aacb766d1048becbb22}{setupStartingLineButton}}(QPushButton\ *button,\ \textcolor{keywordtype}{int}\ row);}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classstart_race_a62b09a2e6241c89939b95d19cd12733c}{placeHorse}}(\textcolor{keywordtype}{int}\ horseRow);}
+\DoxyCodeLine{00057\ \ \ \ \ std::vector<Horse>\ \mbox{\hyperlink{classstart_race_a710e3fbc5ac9d837ce65f61fac9783a7}{createHorses}}();}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstart_race_ab02da69ed7e0f4bdaba394548a09ab92}{calculateMoneyLine}}();}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstart_race_a90eee82a18972384e553df19a868bac3}{promptRaceRestart}}();}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstart_race_aa8773e1477310e1036c4bc613f40b414}{resetRace}}();}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ STARTRACE\_H}}
+
+\end{DoxyCode}
