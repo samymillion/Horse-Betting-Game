@@ -154,7 +154,7 @@ void GameWindow::onBetEntered() {
 void GameWindow::updateMoneyPool(double newAmount)
 {
     //! Updates money pool with new amount 
-    moneyPoolLabel->setText("Money Pool: " + QString::number(newAmount));
+    moneyPoolLabel->setText("MONEY POOL: " + QString::number(newAmount));
 }
 
 //! A function checks if the horse that the user bet on won the race 
@@ -167,6 +167,7 @@ void GameWindow::checkBetResult(int winningHorse, int odds) {
         double moneyPool = bet->getMoneyPool();
         double newPool = payout + moneyPool;
         updateMoneyPool(newPool);
+        bet->setMoneyPool(newPool);
         QMessageBox::information(this, "Race Result", "Congratulations! Your horse won!");
     }
     else{
@@ -177,7 +178,7 @@ void GameWindow::checkBetResult(int winningHorse, int odds) {
 
 void GameWindow::resetWindow() {
     // Reset the welcome label to prompt user to pick a horse
-    welcomeLabel->setText("Welcome to the Horse Betting Game!");
+    welcomeLabel->setText("\nPICK A HORSE");
     
     welcomeLabel->show();
     
@@ -200,7 +201,7 @@ void GameWindow::resetWindow() {
     horseIndex = -1;
 
     // Ensure the money pool label is updated to reflect current state
-    moneyPoolLabel->setText("Money Pool: " + QString::number(bet->getMoneyPool()));
+    moneyPoolLabel->setText("MONEY POOL: " + QString::number(bet->getMoneyPool()));
     moneyPoolLabel->show();
 }
 

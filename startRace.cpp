@@ -65,6 +65,7 @@ void startRace::setupUI() {
         
         connect(this, &startRace::raceFinished, gameWindow, &GameWindow::checkBetResult);
         connect(this, &startRace::resetBet, gameWindow, &GameWindow::resetWindow);
+        
         connect(gameWindow, &GameWindow::betPlaced, this, [this]() {
             betPlaced = true;
         });
