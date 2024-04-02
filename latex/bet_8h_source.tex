@@ -1,0 +1,63 @@
+\doxysection{bet.\+h}
+\hypertarget{bet_8h_source}{}\label{bet_8h_source}\mbox{\hyperlink{bet_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ BET\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ BET\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <QObject>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_bet}{Bet}}\ :\ \textcolor{keyword}{public}\ QObject}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ Q\_OBJECT}
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_bet_1_1_bet_info}{BetInfo}}\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ amount;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ horseIndex;}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ payout;}
+\DoxyCodeLine{00033\ \ \ \ \ \};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_bet_a88448e2923819acb9763f6ffe245fa29}{Bet}}(\textcolor{keywordtype}{double}\ initialMoneyPool,\ QObject\ *parent\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00044\ \ \ \ \ }
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bet_a94b54d5bccb99c784c0d78ddf9d1e593}{setBetAmount}}(\textcolor{keywordtype}{double}\ amount);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bet_ae4d47efa8351a5ae8806e2c9a24a47b9}{setMoneyPool}}(\textcolor{keywordtype}{double}\ amount);}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_bet_a21891fdbb0ced74985b324fe58a0c731}{getBetAmount}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_bet_a6ce52d47a0103722b2ba8e9085a4c69b}{getMoneyPool}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_bet_af94631c9c55057308d1421f3ea19ac40}{placeBet}}();}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_bet_a5fafd4340fcf65e18e675d4763a44b9b}{calculatePayout}}(\textcolor{keywordtype}{int}\ amount,\ \textcolor{keywordtype}{int}\ odds,\ \textcolor{keywordtype}{int}\ horseIndex,\ \textcolor{keywordtype}{bool}\ isWin);}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<BetInfo>\&\ \mbox{\hyperlink{class_bet_a32bea19c7ea425e97548ac5b8d0b6015}{getBettingHistory}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ signals:}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_bet_a739fefd2525df68e960f2a23e5fabbf5}{moneyPoolChanged}}(\textcolor{keywordtype}{double}\ newAmount);}
+\DoxyCodeLine{00104\ \textcolor{keyword}{public}\ slots:}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_bet_a68e39ba9a417ccd06f215b9bcbc6032f}{m\_betAmount}};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_bet_a9b65be6e9a5424be0d1bb0f4cd052416}{m\_moneyPool}};}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ std::vector<BetInfo>\ m\_bettingHistory;}
+\DoxyCodeLine{00114\ \};}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ BET\_H}}
+
+\end{DoxyCode}

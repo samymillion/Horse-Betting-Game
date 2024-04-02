@@ -1,0 +1,285 @@
+\doxysection{start\+Race Class Reference}
+\hypertarget{classstart_race}{}\label{classstart_race}\index{startRace@{startRace}}
+Inheritance diagram for start\+Race\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classstart_race}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classstart_race_ad7e32285be654613e081786daa416370}\label{classstart_race_ad7e32285be654613e081786daa416370} 
+void {\bfseries race\+Finished} (int winning\+Horse\+Index, int odds)
+\item 
+\Hypertarget{classstart_race_a1646b020de6c15518760ce86a867ff83}\label{classstart_race_a1646b020de6c15518760ce86a867ff83} 
+void {\bfseries reset\+Bet} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classstart_race_abcbbe6bbfcdcccbcf6a22b2652f10f30}{start\+Race}} (QWidget \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Initializes the race window and sets up the UI components. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classstart_race_aa55c7f1bd5c02b8351fdf06cf10bcd52}{advance\+Horses}} ()
+\begin{DoxyCompactList}\small\item\em Moves each horse forward based on a random chance adjusted by the horse\textquotesingle{}s speed factor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classstart_race_a685b1476bb443ac44a960270a419902a}{setup\+UI}} ()
+\begin{DoxyCompactList}\small\item\em Constructs the main layout, creates the buttons, and the race track. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstart_race_aa31fdb39da2473258e357d1e34b47dcb}{show\+Horse\+Roster}} ()
+\begin{DoxyCompactList}\small\item\em Creates a dialog displaying the odds and speed of each horse. \end{DoxyCompactList}\item 
+QHBox\+Layout \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classstart_race_a6512f3feafab4c96292fcf1015f13b36}{create\+Button\+Bar}} ()
+\begin{DoxyCompactList}\small\item\em Constructs a QHBox\+Layout containing the button widgets. \end{DoxyCompactList}\item 
+QPush\+Button \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classstart_race_ae90224b340f84214216cb0d67122d822}{create\+Button}} (const QString \&text, int width, int height, const QString \&style)
+\begin{DoxyCompactList}\small\item\em A function that creates buttons that we use throughout \doxylink{classstart_race}{start\+Race}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstart_race_a4a47de2071bc3cdb886d63727412a2d5}{create\+Race\+Track}} (QVBox\+Layout \texorpdfstring{$\ast$}{*}main\+Layout)
+\begin{DoxyCompactList}\small\item\em Constructs the race track layout and adds it to the main layout. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstart_race_a2ce25a24087b6aacb766d1048becbb22}{setup\+Starting\+Line\+Button}} (QPush\+Button \texorpdfstring{$\ast$}{*}button, int row)
+\begin{DoxyCompactList}\small\item\em Sets up a QPush\+Button to mark the starting line of the race track. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classstart_race_a62b09a2e6241c89939b95d19cd12733c}{place\+Horse}} (int horse\+Row)
+\begin{DoxyCompactList}\small\item\em Places a horse in the result order based on its arrival at the finish line. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{class_horse}{Horse}} $>$ \mbox{\hyperlink{classstart_race_a710e3fbc5ac9d837ce65f61fac9783a7}{create\+Horses}} ()
+\begin{DoxyCompactList}\small\item\em Generates the horse objects for the race and assigns their money lines. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstart_race_ab02da69ed7e0f4bdaba394548a09ab92}{calculate\+Money\+Line}} ()
+\begin{DoxyCompactList}\small\item\em Determines the betting odds for each horse based on their relative speeds. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstart_race_a90eee82a18972384e553df19a868bac3}{prompt\+Race\+Restart}} ()
+\begin{DoxyCompactList}\small\item\em Displays a message box asking the user to either restart the race or quit the game. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstart_race_aa8773e1477310e1036c4bc613f40b414}{reset\+Race}} ()
+\begin{DoxyCompactList}\small\item\em Clears the race track and reinitializes the horses for a new race. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classstart_race_aa63271472890173f291e17434dc1f593}\label{classstart_race_aa63271472890173f291e17434dc1f593} 
+QGrid\+Layout \texorpdfstring{$\ast$}{*} {\bfseries race\+Track\+Layout}
+\item 
+\Hypertarget{classstart_race_ad43f5e9745a235c3c4943bb2866d8fb8}\label{classstart_race_ad43f5e9745a235c3c4943bb2866d8fb8} 
+QPush\+Button \texorpdfstring{$\ast$}{*} {\bfseries start\+Race\+Button}
+\item 
+\Hypertarget{classstart_race_ad26ac2a79f3654898eeba5552ec7f5df}\label{classstart_race_ad26ac2a79f3654898eeba5552ec7f5df} 
+QVector$<$ QVector$<$ QPush\+Button \texorpdfstring{$\ast$}{*} $>$ $>$ {\bfseries track\+Buttons}
+\item 
+\Hypertarget{classstart_race_a878c96631daa4131bd2dc8effc713e63}\label{classstart_race_a878c96631daa4131bd2dc8effc713e63} 
+const int {\bfseries num\+Rows} = 5
+\item 
+\Hypertarget{classstart_race_a5d8f95f2ec708de48e06a4b2031e3d2d}\label{classstart_race_a5d8f95f2ec708de48e06a4b2031e3d2d} 
+const int {\bfseries num\+Cols} = 25
+\item 
+\Hypertarget{classstart_race_a69571d6a7b8ff08ab987ec5ce9b0f184}\label{classstart_race_a69571d6a7b8ff08ab987ec5ce9b0f184} 
+QTimer \texorpdfstring{$\ast$}{*} {\bfseries timer}
+\item 
+\Hypertarget{classstart_race_a2bad6771a84ab1e9d720506f824bf59c}\label{classstart_race_a2bad6771a84ab1e9d720506f824bf59c} 
+int {\bfseries horses\+Finished} = 0
+\item 
+\Hypertarget{classstart_race_abd8a192d1d09a691142ddb3f947f98da}\label{classstart_race_abd8a192d1d09a691142ddb3f947f98da} 
+int {\bfseries results} \mbox{[}5\mbox{]}
+\item 
+\Hypertarget{classstart_race_a2426b0353079d1628fd0202741fc13a3}\label{classstart_race_a2426b0353079d1628fd0202741fc13a3} 
+std\+::vector$<$ \mbox{\hyperlink{class_horse}{Horse}} $>$ {\bfseries horse\+List}
+\item 
+\Hypertarget{classstart_race_a094fc1989c0e6c0b979643a9b355291b}\label{classstart_race_a094fc1989c0e6c0b979643a9b355291b} 
+bool {\bfseries bet\+Placed} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classstart_race_abcbbe6bbfcdcccbcf6a22b2652f10f30}\label{classstart_race_abcbbe6bbfcdcccbcf6a22b2652f10f30} 
+\index{startRace@{startRace}!startRace@{startRace}}
+\index{startRace@{startRace}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{startRace()}{startRace()}}
+{\footnotesize\ttfamily start\+Race\+::start\+Race (\begin{DoxyParamCaption}\item[{QWidget \texorpdfstring{$\ast$}{*}}]{parent = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+
+Initializes the race window and sets up the UI components. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The parent widget, defaults to nullptr. Constructor for the \doxylink{classstart_race}{start\+Race} class. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classstart_race_aa55c7f1bd5c02b8351fdf06cf10bcd52}\label{classstart_race_aa55c7f1bd5c02b8351fdf06cf10bcd52} 
+\index{startRace@{startRace}!advanceHorses@{advanceHorses}}
+\index{advanceHorses@{advanceHorses}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{advanceHorses}{advanceHorses}}
+{\footnotesize\ttfamily void start\+Race\+::advance\+Horses (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+Moves each horse forward based on a random chance adjusted by the horse\textquotesingle{}s speed factor. 
+
+Advances the horses along the track randomly based on their speed. \Hypertarget{classstart_race_ab02da69ed7e0f4bdaba394548a09ab92}\label{classstart_race_ab02da69ed7e0f4bdaba394548a09ab92} 
+\index{startRace@{startRace}!calculateMoneyLine@{calculateMoneyLine}}
+\index{calculateMoneyLine@{calculateMoneyLine}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{calculateMoneyLine()}{calculateMoneyLine()}}
+{\footnotesize\ttfamily void start\+Race\+::calculate\+Money\+Line (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Determines the betting odds for each horse based on their relative speeds. 
+
+Calculates the money line for each horse based on their speed. \Hypertarget{classstart_race_ae90224b340f84214216cb0d67122d822}\label{classstart_race_ae90224b340f84214216cb0d67122d822} 
+\index{startRace@{startRace}!createButton@{createButton}}
+\index{createButton@{createButton}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{createButton()}{createButton()}}
+{\footnotesize\ttfamily QPush\+Button \texorpdfstring{$\ast$}{*} start\+Race\+::create\+Button (\begin{DoxyParamCaption}\item[{const QString \&}]{text,  }\item[{int}]{width,  }\item[{int}]{height,  }\item[{const QString \&}]{style }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+A function that creates buttons that we use throughout \doxylink{classstart_race}{start\+Race}. 
+
+\begin{DoxyReturn}{Returns}
+QPush\+Button object button to use for different purposes 
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em text} & of the button text to appear \\
+\hline
+{\em width} & of the button dimensions \\
+\hline
+{\em height} & of the button dimensions \\
+\hline
+{\em style} & elements including font, background, etc. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstart_race_a6512f3feafab4c96292fcf1015f13b36}\label{classstart_race_a6512f3feafab4c96292fcf1015f13b36} 
+\index{startRace@{startRace}!createButtonBar@{createButtonBar}}
+\index{createButtonBar@{createButtonBar}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{createButtonBar()}{createButtonBar()}}
+{\footnotesize\ttfamily QHBox\+Layout \texorpdfstring{$\ast$}{*} start\+Race\+::create\+Button\+Bar (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Constructs a QHBox\+Layout containing the button widgets. 
+
+Creates the panel of buttons for different functionalities
+
+\begin{DoxyReturn}{Returns}
+A pointer to a QHBox\+Layout object containing the button widgets. 
+\end{DoxyReturn}
+\doxylink{class_bet}{Bet} Display Button
+
+Start Race Button
+
+Version Display Button\Hypertarget{classstart_race_a710e3fbc5ac9d837ce65f61fac9783a7}\label{classstart_race_a710e3fbc5ac9d837ce65f61fac9783a7} 
+\index{startRace@{startRace}!createHorses@{createHorses}}
+\index{createHorses@{createHorses}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{createHorses()}{createHorses()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{class_horse}{Horse}} $>$ start\+Race\+::create\+Horses (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Generates the horse objects for the race and assigns their money lines. 
+
+Creates the horses for the race and calculates their money line \begin{DoxyReturn}{Returns}
+A vector of \doxylink{class_horse}{Horse} objects. 
+\end{DoxyReturn}
+\Hypertarget{classstart_race_a4a47de2071bc3cdb886d63727412a2d5}\label{classstart_race_a4a47de2071bc3cdb886d63727412a2d5} 
+\index{startRace@{startRace}!createRaceTrack@{createRaceTrack}}
+\index{createRaceTrack@{createRaceTrack}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{createRaceTrack()}{createRaceTrack()}}
+{\footnotesize\ttfamily void start\+Race\+::create\+Race\+Track (\begin{DoxyParamCaption}\item[{QVBox\+Layout \texorpdfstring{$\ast$}{*}}]{main\+Layout }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Constructs the race track layout and adds it to the main layout. 
+
+A function that creates the race track for the horse game 
+\begin{DoxyParams}{Parameters}
+{\em main\+Layout} & a Qt layout to build the race track layout upon and appear flexibly in game window \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstart_race_a62b09a2e6241c89939b95d19cd12733c}\label{classstart_race_a62b09a2e6241c89939b95d19cd12733c} 
+\index{startRace@{startRace}!placeHorse@{placeHorse}}
+\index{placeHorse@{placeHorse}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{placeHorse()}{placeHorse()}}
+{\footnotesize\ttfamily bool start\+Race\+::place\+Horse (\begin{DoxyParamCaption}\item[{int}]{horse\+Row }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Places a horse in the result order based on its arrival at the finish line. 
+
+A function that places a horse in the result order that they arrived in the race \begin{DoxyReturn}{Returns}
+boolean to place horse\textquotesingle{}s in the order that they arrive 
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em button} & Qt button to utilize as starting line \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstart_race_a90eee82a18972384e553df19a868bac3}\label{classstart_race_a90eee82a18972384e553df19a868bac3} 
+\index{startRace@{startRace}!promptRaceRestart@{promptRaceRestart}}
+\index{promptRaceRestart@{promptRaceRestart}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{promptRaceRestart()}{promptRaceRestart()}}
+{\footnotesize\ttfamily void start\+Race\+::prompt\+Race\+Restart (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Displays a message box asking the user to either restart the race or quit the game. 
+
+Prompts the user to restart the race or quit the game after a race finishes. \Hypertarget{classstart_race_aa8773e1477310e1036c4bc613f40b414}\label{classstart_race_aa8773e1477310e1036c4bc613f40b414} 
+\index{startRace@{startRace}!resetRace@{resetRace}}
+\index{resetRace@{resetRace}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{resetRace()}{resetRace()}}
+{\footnotesize\ttfamily void start\+Race\+::reset\+Race (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Clears the race track and reinitializes the horses for a new race. 
+
+Resets the race to its initial state, allowing for a new race to start. \Hypertarget{classstart_race_a2ce25a24087b6aacb766d1048becbb22}\label{classstart_race_a2ce25a24087b6aacb766d1048becbb22} 
+\index{startRace@{startRace}!setupStartingLineButton@{setupStartingLineButton}}
+\index{setupStartingLineButton@{setupStartingLineButton}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{setupStartingLineButton()}{setupStartingLineButton()}}
+{\footnotesize\ttfamily void start\+Race\+::setup\+Starting\+Line\+Button (\begin{DoxyParamCaption}\item[{QPush\+Button \texorpdfstring{$\ast$}{*}}]{button,  }\item[{int}]{row }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Sets up a QPush\+Button to mark the starting line of the race track. 
+
+A function that creates button marking the starting line for the horse race game 
+\begin{DoxyParams}{Parameters}
+{\em button} & Qt button to utilize as starting line \\
+\hline
+{\em row} & what row to place within \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstart_race_a685b1476bb443ac44a960270a419902a}\label{classstart_race_a685b1476bb443ac44a960270a419902a} 
+\index{startRace@{startRace}!setupUI@{setupUI}}
+\index{setupUI@{setupUI}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{setupUI()}{setupUI()}}
+{\footnotesize\ttfamily void start\+Race\+::setup\+UI (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Constructs the main layout, creates the buttons, and the race track. 
+
+Sets up the UI elements of the race within the game window. Player stats button
+
+\doxylink{class_horse}{Horse} roster button
+
+Betting interface Assuming \doxylink{class_game_window}{Game\+Window} is properly defined elsewhere and handles betting logic
+
+Set main layout alignment and size\Hypertarget{classstart_race_aa31fdb39da2473258e357d1e34b47dcb}\label{classstart_race_aa31fdb39da2473258e357d1e34b47dcb} 
+\index{startRace@{startRace}!showHorseRoster@{showHorseRoster}}
+\index{showHorseRoster@{showHorseRoster}!startRace@{startRace}}
+\doxysubsubsection{\texorpdfstring{showHorseRoster()}{showHorseRoster()}}
+{\footnotesize\ttfamily void start\+Race\+::show\+Horse\+Roster (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Creates a dialog displaying the odds and speed of each horse. 
+
+Displays horse statistics to help the user select and bet 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{start_race_8h}{start\+Race.\+h}}\item 
+moc\+\_\+start\+Race.\+cpp\item 
+\mbox{\hyperlink{start_race_8cpp}{start\+Race.\+cpp}}\end{DoxyCompactItemize}
