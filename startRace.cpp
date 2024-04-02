@@ -1,3 +1,13 @@
+/*!
+ * \file startRace.cpp
+ * \author Kevin, Zeba, Sam, Anna, Rohith
+ * \date 2024-04-01
+ * \brief Implementation file for the startRace class.
+ *
+ *   This class manages the bet in a betting game, this icnludes the bet amount, the money pool,  payouts, 
+ *   and it also has an array that maintains the bet history
+ */
+
 #include <QApplication>
 #include <cmath>
 #include <QWidget>
@@ -20,13 +30,19 @@ using namespace std;
 
 #include "startRace.h"
 
-//! startRace runs the race logic and components related to the race
-startRace::startRace(QWidget *parent) : QWidget(parent), horsesFinished(0) {
+//! \brief Initializes the race window and sets up the UI components.
+/*!
+  \param parent The parent widget, defaults to nullptr.
+  Constructor for the startRace class.
+ */startRace::startRace(QWidget *parent) : QWidget(parent), horsesFinished(0) {
     srand(static_cast<unsigned>(time(NULL))); //seed
     this->setupUI();
 }
 
-//! A function to setup aspects of the race within the gamewindow 
+//!   \brief Constructs the main layout, creates the buttons, and the race track
+/*!
+    Sets up the UI elements of the race within the game window.
+ */
 void startRace::setupUI() {
 
         GameWindow* gameWindow = new GameWindow();
@@ -85,7 +101,12 @@ void startRace::setupUI() {
         connect(timer, &QTimer::timeout, this, &startRace::advanceHorses);
     }
 
-//! A function to assign and display horse statistics to help user select and bet
+
+//! \brief Creates a dialog displaying the odds and speed of each horse.
+/*!
+    Displays horse statistics to help the user select and bet
+
+*/
 void startRace::showHorseRoster() {
     QDialog *horseRosterDialog = new QDialog(this);
     horseRosterDialog->setWindowTitle("Horse Roster");
@@ -131,10 +152,12 @@ void startRace::showHorseRoster() {
     horseRosterDialog->exec();
 }
 
-//! A function that creates the top panel of buttons including money, start race, and game title bar
+//! \brief Constructs a QHBoxLayout containing the button widgets.
 /*!
-*   \return QHBoxLayout object layout which contains the widgets
-*/
+    Creates the  panel of buttons for different functionalities
+
+    \return A pointer to a QHBoxLayout object containing the button widgets.
+ */
 QHBoxLayout* startRace::createButtonBar() {
         QHBoxLayout* layout = new QHBoxLayout;
         QPushButton* button;
@@ -184,8 +207,9 @@ QPushButton* startRace::createButton(const QString& text, int width, int height,
         return button;
     }
 
-//! A function that creates the race track for the horse game
+//! \brief Constructs the race track layout and adds it to the main layout
 /*!
+    A function that creates the race track for the horse game
     \param mainLayout a Qt layout to build the race track layout upon and appear flexibly in game window
 */
 void startRace::createRaceTrack(QVBoxLayout* mainLayout) {
@@ -211,8 +235,9 @@ void startRace::createRaceTrack(QVBoxLayout* mainLayout) {
         mainLayout->addLayout(raceTrackLayout);
     }
 
-//! A function that creates button marking the starting line for the horse race game
+//!  \brief Sets up a QPushButton to mark the starting line of the race track.
 /*!
+    A function that creates button marking the starting line for the horse race game
     \param button Qt button to utilize as starting line
     \param row what row to place within
 */
@@ -223,7 +248,10 @@ void startRace::setupStartingLineButton(QPushButton* button, int row) {
         button->setStyleSheet("background-color: red;");
     }
 
-//! A function that moves horse along the track randomly
+//! \brief Moves each horse forward based on a random chance adjusted by the horse's speed factor.
+/*!
+    Advances the horses along the track randomly based on their speed.
+ */
 void startRace::advanceHorses() {
         for (int row = 0; row < numRows; ++row) {
         double baseChance = 0.5; // Base chance for the horse to move (50%)
@@ -277,8 +305,9 @@ void startRace::advanceHorses() {
         }
 }
 
-//! A function that places a horse in the result order that they arrived in the race
+//! \brief Places a horse in the result order based on its arrival at the finish line.
 /*!
+    A function that places a horse in the result order that they arrived in the race
     \return boolean to place horse's in the order that they arrive
     \param button Qt button to utilize as starting line
 */
@@ -299,7 +328,11 @@ bool startRace::placeHorse(int horseRow) {
         return false;
     }
 
-
+//!  \brief Generates the horse objects for the race and assigns their money lines
+/*!
+  Creates the horses for the race and calculates their money line
+  \return A vector of Horse objects.
+ */
 std::vector<Horse> startRace::createHorses(){
     Horse horseOne("Cocoa Comet");
     Horse horseTwo("Ocean Breeze");
@@ -321,6 +354,10 @@ std::vector<Horse> startRace::createHorses(){
     return horseList;
 }
 
+//! \brief Determines the betting odds for each horse based on their relative speeds.
+/*!
+    Calculates the money line for each horse based on their speed.
+ */
 void startRace::calculateMoneyLine() {
     double totalSpeed = 0;
     std::vector<double> winningProbabilities(horseList.size(), 0.0);
@@ -358,7 +395,10 @@ void startRace::calculateMoneyLine() {
     }
 }
 
-
+//!  \brief Displays a message box asking the user to either restart the race or quit the game.
+/*!
+     Prompts the user to restart the race or quit the game after a race finishes.
+ */
 void startRace::promptRaceRestart() {
     QMessageBox messageBox;
     messageBox.setWindowTitle("Race Finished");
@@ -378,7 +418,10 @@ void startRace::promptRaceRestart() {
     }
 }
 
-
+//!  \brief Clears the race track and reinitializes the horses for a new race.
+/*!
+     Resets the race to its initial state, allowing for a new race to start.
+ */
 void startRace::resetRace() {
     // Reset the track for all horses
     for(int row = 0; row < numRows; ++row) {
@@ -399,7 +442,9 @@ void startRace::resetRace() {
     startRaceButton->setEnabled(true); // Re-enable the start race button
 }
 
-
+/*!
+ * \brief Main entry point of the application.
+ */
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     startRace window;

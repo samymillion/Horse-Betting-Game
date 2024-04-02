@@ -1,3 +1,14 @@
+/*!
+* \file gamewindow.cpp
+* \author Zeba, Anna, Rohith, Sam, Kevin
+* \date 2024-04-01
+* \brief Implementation of betting UI (place bets and view bet history).
+* 
+* This class creates and modifies instances of Bet objects when the user interacts with the betting interface in the game.
+* It allows the user to enter a bet, select a horse to bet on, place a bet, update the money pool, check the bet result after a race, and display betting history.
+* Primarily, features that were meant to be implemented sequentially are included in this file.
+*/
+
 #include "gamewindow.h"
 
 #include <QPushButton>
@@ -11,9 +22,12 @@
 #include <QLineEdit>
 #include <iostream>
 
-//! Game window 
+//! \brief Constructor for Gamewindow class.
 /*!
- * gamewindow.cpp is our file used for game window and game window mechanisms including: picking a horse, entering bet, and money pool updating. Primarily, features that were meant to be implemented sequentially are included in this file.
+    This constructor creates a layout of the betting interface that displays the money pool, bet input field, and horses to bet on.
+    It creates an instance of a new Bet object.
+    \param parent The parent QWidget.
+
  */
 
 GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
@@ -66,8 +80,9 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent) {
     }
 }
 
-//! A function allows the user to pick the horse that they would like to bet on too win
+//! \brief A function allows the user to pick the horse that they would like to bet on to win
 /*!
+    On the betting interface, when  the user first clicks continue, this function displays a list of horses and allows to user to select one to bet on.
 */
 void GameWindow::onContinueClicked() {
 
@@ -81,8 +96,9 @@ void GameWindow::onContinueClicked() {
     }
 }
 
-//! A function that allows the user to input in a text box the amount they would like to bet on a horse
+//! \brief A function that allows the user to input in a text box the amount they would like to bet on a horse
 /*!
+    After the user selects a horse, this function displays an input field for the user to enter a bet amount in.
 */
 void GameWindow::onHorseSelected() {
 
@@ -113,8 +129,11 @@ void GameWindow::onHorseSelected() {
     }
 }
 
-//! A function that once the user has entered bet sets the bet amount and goes onto the next screen to confirm if it is placed succesfully or if there is an error
+//! \brief A function that once the user has entered bet sets the bet amount and goes onto the next screen to confirm if it is placed succesfully or if there is an error
 /*!
+    After the user enters a bet and presses the enter key, it checks to see if the bet is valid and within the bounds of the money pool.
+    If it is valid, the user may start the race. Otherwise, they are shown a warning message.
+    It prohibits the user from entering a new bet while a race is in progress.
 */
 void GameWindow::onBetEntered() {
     QString betAmountStr = betInput->text();
@@ -147,7 +166,7 @@ void GameWindow::onBetEntered() {
     }
 }
 
-//! A function that updates the money paul based on the new maount
+//! \brief A function that updates the money paul based on the new maount
 /*!
     \param newAmount the new amount for money pool
 */
@@ -157,7 +176,7 @@ void GameWindow::updateMoneyPool(double newAmount)
     moneyPoolLabel->setText("MONEY POOL: " + QString::number(newAmount));
 }
 
-//! A function checks if the horse that the user bet on won the race 
+//! \brief A function checks if the horse that the user bet on won the race 
 /*!
     \param winningHorse id of the horse that wins
 */
@@ -176,13 +195,14 @@ void GameWindow::checkBetResult(int winningHorse, int odds) {
     }
 }
 
+//! \brief A function that allows the user to place a new bet for the next race.
+/*!
+    This function reset the welcome label to prompt user to pick a horse, and shows the bet input field only if it is a new race.
+*/
 void GameWindow::resetWindow() {
     // Reset the welcome label to prompt user to pick a horse
     welcomeLabel->setText("\nPICK A HORSE");
-    
     welcomeLabel->show();
-    
-
     continueButton->hide();
 
     // Re-enable and show horse selection buttons
@@ -205,22 +225,24 @@ void GameWindow::resetWindow() {
     moneyPoolLabel->show();
 }
 
-//NEW BETTING HISTORY
+//! \brief A function that displays user's betting history.
+/*!
+    This function displays a list of the user's past bets, horses bet on, and payouts.
+*/
 void GameWindow::displayBettingHistory() {
     QDialog *betHistoryDialog = new QDialog(this);
     betHistoryDialog->setWindowTitle("Bet History");
     QVBoxLayout *layout = new QVBoxLayout(betHistoryDialog);
 
     const auto& history = bet->getBettingHistory();
-
     const QString names[5] = {"Cocoa Comet", "Ocean Breeze", "Jade Jumper", "Ruby Rocket", "Lemon Lucky"};
  
+    // If there is no bet history yet
     if (history.empty()) {
         layout->addWidget(new QLabel("No History of Races to Show"));
     } else {
-
+    // If there is bet history
         for (const auto& betInfo : history) {
-
             QString itemText = QString("Bet: $%1 on " + names[betInfo.horseIndex] + " Payout: $%2")
                 .arg(betInfo.amount)
                 .arg(betInfo.payout);

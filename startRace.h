@@ -1,3 +1,13 @@
+/*!
+ * \file startRace.h
+ * \author Kevin, Zeba, Sam, Anna, Rohith
+ * \date 2024-04-01
+ * \brief Definition of the startRace class for managing bets in the game.
+ *
+ * This file contains the declaration of the startRace class, which is responsible game logic and setting up
+ * the ui
+ */
+
 #ifndef STARTRACE_H
 #define STARTRACE_H
 
